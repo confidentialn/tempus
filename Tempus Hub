@@ -26,7 +26,7 @@ if game.PlaceId == 3237168 then
             _G.ToggleFish = false
         end
     end)
-
+    
     MainSection:NewToggle("AutoCompass", "Auto claims and completes compasses for you", function(state)
         if state then
             loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoCompass'))()
@@ -35,7 +35,7 @@ if game.PlaceId == 3237168 then
         end
     end)
 
-    --LOCAL PLAYER
+    -- LOCAL PLAYER
     local Player = Window:NewTab("Player")
     local PlayerSection = Player:NewSection("Player")
 
@@ -71,5 +71,62 @@ if game.PlaceId == 3237168 then
             compass.Parent = game.Players.LocalPlayer.Character
             compass:Activate()
         end
+    end)
+
+    -- MERCHANTS
+    local Merchants = Window:NewTab("Merchants")
+    local MerchantsSection = Merchants:NewSection("Merchants Remotes")
+
+    MerchantsSection:NewButton("Compass", "Collects a compass from sam", function()
+        workspace:WaitForChild("Merchants"):WaitForChild("QuestMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer("Claim" .. tostring(_G.CompassNumber))
+    end)
+
+    MerchantsSection:NewSlider("Number of Comps", "Change the number of compasses collected", 100, 1, function(c)
+        _G.CompassNumber = c
+    end)
+
+    MerchantsSection:NewButton("Expertise", "Get an expertise quest", function()
+        workspace:WaitForChild("Merchants"):WaitForChild("ExpertiseMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer()
+    end)
+
+    MerchantsSection:NewToggle("Auto Rayleigh", "Automatically do Rayleigh and obtain haki", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoRayleigh'))()
+        else
+            _G.AutoRayleigh = false
+        end
+    end)
+
+    -- MISC
+    local Misc = Window:NewTab("Misc")
+    local MiscSection = Misc:NewSection("Misc")
+    local ExternalSection = Misc:NewSection("External Scripts")
+
+    ExternalSection:NewButton("Infinite Yield", "FE Admin Commands", function()
+        loadstring(game:HttpGet(('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'), true))()
+    end)
+
+    ExternalSection:NewButton("Chat Spy", "Lets you spy on others' chats", function()
+        loadstring(game:HttpGet(('https://pastebin.com/raw/qNMunbP8'), true))()
+    end)
+
+    ExternalSection:NewButton("Dark Dex", "Lets you view game explorer", function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua", true))()
+    end)
+
+    MiscSection:NewButton("Safe Place", "Teleports you to a safe place", function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/confidentialn/tempus/main/Safeplace", true))()
+    end)
+
+    MiscSection:NewSlider("Safe Place Size", "Change the safe place size", 1000, 0, function(a)
+        _G.PlatformSize = a
+    end)
+
+    -- SETTINGS
+    local Settings = Window:NewTab("Settings")
+    local SettingsSection = Settings:NewSection("Settings")
+
+    SettingsSection:NewKeybind("Set Keybind", "Sets your keybind (Default: P)", Enum.KeyCode.P, function()
+        Library:ToggleUI()
     end)
 end
