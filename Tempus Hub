@@ -64,12 +64,12 @@ if game.PlaceId == 3237168 then
             compass.Parent = game.Players.LocalPlayer.Character
             compass:Activate()
         end
-    end) -- Added missing closing parenthesis here
-
-    -- Equip and activate compasses
-    for _, compass in ipairs(compasses) do
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
-        compass.Parent = game.Players.LocalPlayer.Character
-        compass:Activate()
-    end
+        
+        -- Equip and activate compasses
+        for _, compass in ipairs(compasses) do
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
+            compass.Parent = game.Players.LocalPlayer.Character
+            compass:Activate()
+        end
+    end)
 end
