@@ -9,7 +9,7 @@ if game.PlaceId == 3237168 then
 
     MainSection:NewToggle("Autofarm NPCS", "Autoteleports you to a safe place to farm NPCS", function(state)
         if state then
-		loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/NPCFarm'))()	
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/NPCFarm'))()
         else
             _G.Farming = false
         end
@@ -21,21 +21,19 @@ if game.PlaceId == 3237168 then
 
     MainSection:NewToggle("Autofish", "Autoteleports you to a safe place to fish", function(state)
         if state then
-		loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoFish'))()	
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoFish'))()
         else
             _G.ToggleFish = false
         end
     end)
-	
-	    MainSection:NewToggle("AutoCompass", "Auto claims and completes compasses for you", function(state)
+
+    MainSection:NewToggle("AutoCompass", "Auto claims and completes compasses for you", function(state)
         if state then
-		loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoCompass'))()	
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoCompass'))()
         else
             _G.AutoCompass = false
         end
     end)
-	
-	
 
     --LOCAL PLAYER
     local Player = Window:NewTab("Player")
@@ -55,85 +53,23 @@ if game.PlaceId == 3237168 then
     end)
 
     PlayerSection:NewButton("Locate Compass", "Locates compass", function()
-		local compasses = {}  -- Table to store compasses found in the inventory
-		for _, item in ipairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-			if item:IsA("Tool") and item.Name == "Compass" then
-				table.insert(compasses, item)
-			end
-		end
-		for _, compass in ipairs(compasses) do
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
-			compass.Parent = game.Players.LocalPlayer.Character
-			compass:Activate()
-		end
-	end
-
--- Equip and activate compasses
-for _, compass in ipairs(compasses) do
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
-    compass.Parent = game.Players.LocalPlayer.Character
-    compass:Activate()
-end
-    end)
-
-	-- MERCHANTS
-	
-	local Merchants = Window:NewTab("Merchants")
-	local MerchantsSection = Merchants:NewSection("Merchants Remotes")
-	
-	MerchantsSection:NewButton("Compass", "Collects a compass from sam", function()
-        workspace:WaitForChild("Merchant"):WaitForChild("QuestMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer("Claim" .. tostring(_G.CompassNumber))
-    end)
-
-	MerchantsSection:NewSlider("Number of Comps", "Change the number of compasses collected", 100, 1, function(c)
-        _G.CompassNumber = c
-    end)
-
-	MerchantsSection:NewButton("Expertise", "Get a expertise quest", function()
-		workspace:WaitForChild("Merchant"):WaitForChild("ExpertiseMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer()
-    end)
-
-    MerchantsSection:NewToggle("Auto Rayleigh", "Automatically do reyleigh and obtain haki", function(state)
-        if state then
-		loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoReyleigh'))()	
-        else
-            _G.Reyleigh = false
+        local compasses = {}  -- Table to store compasses found in the inventory
+        for _, item in ipairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+            if item:IsA("Tool") and item.Name == "Compass" then
+                table.insert(compasses, item)
+            end
         end
-    end)
+        for _, compass in ipairs(compasses) do
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
+            compass.Parent = game.Players.LocalPlayer.Character
+            compass:Activate()
+        end
+    end) -- Added missing closing parenthesis here
 
-
-
-    --Misc
-    local Misc = Window:NewTab("Misc")
-	local MiscSection = Misc:NewSection ("Misc")
-    local ExternalSection = Misc:NewSection("External Scripts")
-
-    ExternalSection:NewButton("Infinite Yield", "FE Admin Commands", function()
-        loadstring(game:HttpGet(('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'),true))()
-    end)
-
-    ExternalSection:NewButton("Chat Spy", "Let's you spy on others chats", function()
-        loadstring(game:HttpGet(('https://pastebin.com/raw/qNMunbP8'),true))()
-    end)
-
-    ExternalSection:NewButton("Dark Dex", "Lets you view game explorer", function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua", true))()
-    end)
-
-    MiscSection:NewButton("Safe Place", "Teleports you to a safe place", function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/confidentialn/tempus/main/Safeplace", true))()
-    end)
-	
-    MiscSection:NewSlider("Safe Place Size", "Change the safe place size", 1000, 0, function(a)
-        _G.PlatformSize = a
-    end)
-	
-	
--- 	SETTINGS
-	local Settings = Window:NewTab("Settings")
-	local SettingsSection = Settings:NewSection("Settings")
-	
-	SettingsSection:NewKeybind("Set Keybind", "Sets your keybind (Default: P) ", Enum.KeyCode.P, function()
-		Library:ToggleUI()
-	end)
+    -- Equip and activate compasses
+    for _, compass in ipairs(compasses) do
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
+        compass.Parent = game.Players.LocalPlayer.Character
+        compass:Activate()
+    end
 end
