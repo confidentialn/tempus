@@ -1,0 +1,18 @@
+local pl = tostring(game:GetService("Players").LocalPlayer.UserId)
+local lv = game:GetService("Workspace").UserData["User_"..pl].Data.HakiLevel.Value
+
+_G.HakiFarm = true
+
+while _G.HakiFarm do
+    for i = 1, 25 do
+        while wait() do
+            workspace.UserData["User_"..pl].III:FireServer("On", lv)
+            wait()
+            workspace.UserData["User_"..pl].III:FireServer("On", lv)
+            wait()
+            workspace.UserData["User_"..pl].III:FireServer("Off", lv)
+            wait()
+            workspace.UserData["User_"..pl].III:FireServer("Off", lv)   
+        end
+    end
+end
