@@ -15,7 +15,7 @@
 
     -- Define the position and size of the platform
     local platformPosition = Vector3.new(randomX, randomY, randomZ)
-    local platformSize = Vector3.new(_G.PlatformSize, 0.5, _G.PlatformSize)
+    local platformSize = Vector3.new(_G.PlatformSize, 1, _G.PlatformSize)
 
     -- Create the platform
     local part = Instance.new("Part")
