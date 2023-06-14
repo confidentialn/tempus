@@ -19,6 +19,13 @@ if game.PlaceId == 3237168 then
         loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/PackageFarm'))()
     end)
 
+    MainSection:NewToggle("Autofish", "Autoteleports you to a safe place to fish", function(state)
+        if state then
+		loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoFish'))()	
+        else
+            _G.ToggleFish = false
+        end
+    end)
 
     --LOCAL PLAYER
     local Player = Window:NewTab("Player")
@@ -41,19 +48,29 @@ if game.PlaceId == 3237168 then
 
     --Misc
     local Misc = Window:NewTab("Misc")
-    local MiscSection = Misc:NewSection("Misc")
+	local MiscSection = Misc:NewSection ("Misc")
+    local ExternalSection = Misc:NewSection("External Scripts")
 
-    MiscSection:NewButton("Infinite Yield", "FE Admin Commands", function()
+    ExternalSection:NewButton("Infinite Yield", "FE Admin Commands", function()
         loadstring(game:HttpGet(('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'),true))()
     end)
 
-    MiscSection:NewButton("Chat Spy", "Let's you spy on others chats", function()
+    ExternalSection:NewButton("Chat Spy", "Let's you spy on others chats", function()
         loadstring(game:HttpGet(('https://pastebin.com/raw/qNMunbP8'),true))()
     end)
 
-    MiscSection:NewButton("Dark Dex", "Lets you view game explorer", function()
+    ExternalSection:NewButton("Dark Dex", "Lets you view game explorer", function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua", true))()
     end)
+
+    MiscSection:NewButton("Safe Place", "Teleports you to a safe place", function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/confidentialn/tempus/main/Safeplace", true))()
+    end)
+	
+    MiscSection:NewSlider("Safe Place Size", "Change the safe place size", 1000, 0, function(a)
+        _G.PlatformSize = a
+    end)
+	
 	
 -- 	SETTINGS
 	local Settings = Window:NewTab("Settings")
