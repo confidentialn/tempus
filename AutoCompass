@@ -1,3 +1,4 @@
+_G.AutoCompass = true
 while _G.AutoCompass do
     local compasses = {}  -- Table to store compasses found in the inventory
 
