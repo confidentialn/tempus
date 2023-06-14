@@ -47,25 +47,21 @@ if game.PlaceId == 3237168 then
 	-- MERCHANTS
 	
 	local Merchants = Window:NewTab("Merchants")
-	local MerchantSection = Merchants:NewSection("Merchant Remotes")
+	local MerchantsSection = Merchants:NewSection("Merchants Remotes")
 	
-	MerchantSection:NewButton("Compass", "Collects a compass from sam", function()
-        workspace:WaitForChild("Merchants"):WaitForChild("QuestMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer("Claim" .. tostring(_G.CompassNumber))
+	MerchantsSection:NewButton("Compass", "Collects a compass from sam", function()
+        workspace:WaitForChild("Merchant"):WaitForChild("QuestMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer("Claim" .. tostring(_G.CompassNumber))
     end)
 
-	MerchantSection:NewSlider("Number of Comps", "Change the number of compasses collected", 100, 1, function(c)
+	MerchantsSection:NewSlider("Number of Comps", "Change the number of compasses collected", 100, 1, function(c)
         _G.CompassNumber = c
     end)
 
-	MerchantSection:NewButton("Expertise", "Get a expertise quest", function()
-		workspace:WaitForChild("Merchants"):WaitForChild("ExpertiseMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer()
+	MerchantsSection:NewButton("Expertise", "Get a expertise quest", function()
+		workspace:WaitForChild("Merchant"):WaitForChild("ExpertiseMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer()
     end)
 
-	MerchantSection:NewButton("Expertise", "Get a expertise quest", function()
-		workspace:WaitForChild("Merchants"):WaitForChild("ExpertiseMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer()
-    end)	
-
-    MerchantSection:NewToggle("Auto Rayleigh", "Automatically do reyleigh and obtain haki", function(state)
+    MerchantsSection:NewToggle("Auto Rayleigh", "Automatically do reyleigh and obtain haki", function(state)
         if state then
 		loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoReyleigh'))()	
         else
