@@ -1,0 +1,36 @@
+local function createPlatform()
+    -- Delete the previous platform if it exists
+    local previousPlatform = workspace:FindFirstChild("Platform")
+    if previousPlatform then
+        previousPlatform:Destroy()
+    end
+
+    -- Generate random X, Y, and Z coordinates
+    local minX = -100000 -- Adjust the minimum and maximum X and Z coordinates as desired
+    local maxX = 100000
+    local minY = 50000
+    local maxY = 75000 -- Adjust the maximum Y coordinate as desired
+
+    local randomX = math.random(minX, maxX)
+    local randomY = math.random(minY, maxY)
+    local randomZ = math.random(minX, maxX)
+
+    -- Define the position and size of the platform
+    local platformPosition = Vector3.new(randomX, randomY, randomZ)
+    local platformSize = Vector3.new(_G.PlatformSize, 0.5, _G.PlatformSize) -- Adjust the size as desired
+
+    -- Create the platform
+    local part = Instance.new("Part")
+    part.Name = "Platform"
+    part.Position = platformPosition
+    part.Size = platformSize
+    part.BrickColor = BrickColor.new("Medium stone grey") -- Adjust the color as desired
+    part.Transparency = 0.3 -- Adjust the transparency as desired
+    part.Material = Enum.Material.Granite -- Adjust the material as desired
+    part.Anchored = true
+    part.CanCollide = true
+    part.Parent = workspace
+end
+
+-- Call the function to create the platform
+createPlatform()
