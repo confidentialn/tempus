@@ -127,10 +127,19 @@ if game.PlaceId == 3237168 then
         _G.PlatformSize = a
     end)
 	
-	MiscSection:NewButton("Hitbox", "Change the hitbox of other players", function()
+	MiscSection:NewButton
         loadstring(game:HttpGet("https://raw.githubusercontent.com/confidentialn/tempus/main/Hitbox", true))()
     end)
 
+
+    MerchantsSection:NewToggle("Hitbox", "Change the hitbox of other players", function()
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/Hitbox'))() 
+        else
+            _loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/CounterHitbox'))()
+        end
+    end)
+	
     MiscSection:NewSlider("Hitbox Size", "Change the hitbox size", 1000, 1, function(hit)
         _G.HitboxSize = hit
     end)
