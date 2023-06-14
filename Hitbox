@@ -1,0 +1,35 @@
+local Players = game:GetService("Players")
+_G.Hitbox = true
+while _G.Hitbox do
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= Players.LocalPlayer then
+            local character = player.Character
+            if character and character:FindFirstChild("HumanoidRootPart") then
+                local rootPart = character.HumanoidRootPart
+                if rootPart:IsA("BasePart") then
+                    -- Modify the hitbox size and color here
+                    local size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize) -- Adjust the values here to your desired size
+                    local color = Color3.new(1, 0, 0) -- Adjust the RGB values here for your desired color
+                    rootPart.Size = size
+                    rootPart.BrickColor = BrickColor.new(color)
+                    rootPart.Transparency = 0.1
+                    
+                    -- Add an aesthetic touch to the hitbox
+                    local particleEmitter = Instance.new("ParticleEmitter")
+                    particleEmitter.Parent = rootPart
+                    particleEmitter.Texture = "rbxassetid://295927518"
+                    particleEmitter.Transparency = NumberSequence.new(0, 0.5)
+                    particleEmitter.Size = NumberSequence.new(20)
+                    particleEmitter.Lifetime = NumberRange.new(1)
+                    particleEmitter.Rate = 10
+                    particleEmitter.Speed = NumberRange.new(10)
+                    particleEmitter.Rotation = NumberRange.new(-180, 180)
+                    particleEmitter.RotSpeed = NumberRange.new(-360, 360)
+                    particleEmitter.Acceleration = Vector3.new(0, -100, 0)
+                end
+            end
+        end
+    end
+    
+    wait(1) -- Wait for 1 second before the next iteration
+end
