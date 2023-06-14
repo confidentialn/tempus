@@ -46,8 +46,8 @@ if game.PlaceId == 3237168 then
 
 	-- MERCHANTS
 	
-	local Merchant = Window:NewTab("Merchants")
-	local MerchantSection = Merchant:NewSection("Merchant Remotes")
+	local Merchants = Window:NewTab("Merchants")
+	local MerchantSection = Merchants:NewSection("Merchant Remotes")
 	
 	MerchantSection:NewButton("Compass", "Collects a compass from sam", function()
         workspace:WaitForChild("Merchants"):WaitForChild("QuestMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer("Claim" .. tostring(_G.CompassNumber))
