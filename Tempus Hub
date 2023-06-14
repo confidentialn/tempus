@@ -26,6 +26,16 @@ if game.PlaceId == 3237168 then
             _G.ToggleFish = false
         end
     end)
+	
+	    MainSection:NewToggle("AutoCompass", "Auto claims and completes compasses for you", function(state)
+        if state then
+		loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoCompass'))()	
+        else
+            _G.AutoCompass = false
+        end
+    end)
+	
+	
 
     --LOCAL PLAYER
     local Player = Window:NewTab("Player")
@@ -42,6 +52,28 @@ if game.PlaceId == 3237168 then
     PlayerSection:NewButton("Reset Grav/JP", "Resets to all defaults", function()
         game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
         Workspace.Gravity = 196.2
+    end)
+
+    PlayerSection:NewButton("Locate Compass", "Locates compass", function()
+		local compasses = {}  -- Table to store compasses found in the inventory
+		for _, item in ipairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+			if item:IsA("Tool") and item.Name == "Compass" then
+				table.insert(compasses, item)
+			end
+		end
+		for _, compass in ipairs(compasses) do
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
+			compass.Parent = game.Players.LocalPlayer.Character
+			compass:Activate()
+		end
+	end
+
+-- Equip and activate compasses
+for _, compass in ipairs(compasses) do
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
+    compass.Parent = game.Players.LocalPlayer.Character
+    compass:Activate()
+end
     end)
 
 	-- MERCHANTS
