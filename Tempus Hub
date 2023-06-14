@@ -34,6 +34,11 @@ if game.PlaceId == 3237168 then
             _G.AutoCompass = false
         end
     end)
+	
+    MainSection:NewButton("Haki Farm", "Farms haki", function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/HakiFarm'))()
+    end)
+
 
     -- LOCAL PLAYER
     local Player = Window:NewTab("Player")
@@ -121,6 +126,15 @@ if game.PlaceId == 3237168 then
     MiscSection:NewSlider("Safe Place Size", "Change the safe place size", 1000, 0, function(a)
         _G.PlatformSize = a
     end)
+	
+	MiscSection:NewButton("Hitbox", "Change the hitbox of other players", function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/confidentialn/tempus/main/Hitbox", true))()
+    end)
+
+    MiscSection:NewSlider("Hitbox Size", "Change the hitbox size", 1000, 1, function(hit)
+        _G.HitboxSize = hit
+    end)
+	
 
     -- SETTINGS
     local Settings = Window:NewTab("Settings")
