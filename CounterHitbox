@@ -1,0 +1,27 @@
+local Players = game:GetService("Players")
+_G.Hitbox = false
+
+while not _G.Hitbox do
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= Players.LocalPlayer then
+            local character = player.Character
+            if character and character:FindFirstChild("HumanoidRootPart") then
+                local rootPart = character.HumanoidRootPart
+                if rootPart:IsA("BasePart") then
+                    -- Revert the hitbox size, color, and transparency to normal
+                    rootPart.Size = Vector3.new(2, 2, 1)
+                    rootPart.BrickColor = BrickColor.new("Bright blue")
+                    rootPart.Transparency = 0
+                    
+                    -- Remove the particle emitter
+                    local particleEmitter = rootPart:FindFirstChildOfClass("ParticleEmitter")
+                    if particleEmitter then
+                        particleEmitter:Destroy()
+                    end
+                end
+            end
+        end
+    end
+    
+    wait(1) -- Wait for 1 second before the next iteration
+end
