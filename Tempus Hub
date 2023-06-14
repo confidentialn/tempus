@@ -138,56 +138,42 @@ if game.PlaceId == 3237168 then
     local Player = Window:NewTab("Player")
     local PlayerSection = Player:NewSection("Player")
 
-    PlayerSection:NewSlider("TPWalkspeed", "Enables TP Walking", 2000, 0, function(s)
-		_G.hb = game:GetService("RunService").Heartbeat
-	_G.tpwalking = false
-
-	local function isNumber(value)
-	    return type(value) == "number"
-	end
-
-	local function teleportWalk(args, speaker)
-	    _G.tpwalking = true
-
-	    local character = speaker.Character
-	    local humanoid = character and character:FindFirstChildWhichIsA("Humanoid")
-
-	    while _G.tpwalking and character and humanoid and humanoid.Parent do
-		local delta = _G.hb:Wait()
-
-		if humanoid.MoveDirection.Magnitude > 0 then
-		    local speed = tonumber(args[1]) or tonumber(s) or 0
-		    character:TranslateBy(humanoid.MoveDirection * speed * delta * 10)
-		end
-	    end
-	end
-
-	local function unteleportWalk()
-	    _G.tpwalking = false
-	end
+    PlayerSection:NewSlider("Gravity", "Change the gravity", 500, 0, function(s)
+        Workspace.Gravity = s
     end)
 
-    PlayerSection:NewSlider("Jumppower", "JUMP HIGH!!", 350, 50, function(s)
+    PlayerSection:NewSlider("Jumppower", "Change your jumppower", 350, 50, function(s)
         game.Players.LocalPlayer.Character.Humanoid.JumpPower = s
     end)
 
-    PlayerSection:NewButton("Reset WS/JP", "Resets to all defaults", function()
+    PlayerSection:NewButton("Reset Grav/JP", "Resets to all defaults", function()
         game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
-        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+        Workspace.Gravity = 196.2
     end)
 
 
-    --Other
-    local Other = Window:NewTab("Other")
-    local OtherSection = Other:NewSection("Other")
 
-    OtherSection:NewButton("Chat Spoofer", "Lets you chat for other people", function()
-        loadstring(game:HttpGet(('https://pastebin.com/raw/djBfk8Li'),true))()
+    --Misc
+    local Misc = Window:NewTab("Misc")
+    local MiscSection = Misc:NewSection("Misc")
+
+    MiscSection:NewButton("Infinite Yield", "FE Admin Commands", function()
+        loadstring(game:HttpGet(('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'),true))()
     end)
 
-    OtherSection:NewButton("Bypassed Fly", "bird mode", function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Nicuse/RobloxScripts/main/BypassedFly.lua"))() 
-
-        Fly(true)
+    MiscSection:NewButton("Chat Spy", "Let's you spy on others chats", function()
+        loadstring(game:HttpGet(('https://pastebin.com/raw/qNMunbP8'),true))()
     end)
 
+    MiscSection:NewButton("Dark Dex", "Lets you view game explorer", function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua", true))()
+    end)
+	
+-- 	SETTINGS
+	local Settings = Window:NewTab("Settings")
+	local SettingsSection = Settings:NewSection("Settings")
+	
+	SettingsSection:NewKeybind("Set Keybind", "Sets your keybind (Default: P) ", Enum.KeyCode.P, function()
+		Library:ToggleUI()
+	end)
+end
