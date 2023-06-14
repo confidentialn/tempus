@@ -44,6 +44,35 @@ if game.PlaceId == 3237168 then
         Workspace.Gravity = 196.2
     end)
 
+	-- MERCHANTS
+	
+	local Merchant = Window:NewTab("Merchants")
+	local MerchantSection = Main:NewSection("Merchant Remotes")
+	
+	MerchantSection:NewButton("Compass", "Collects a compass from sam", function()
+        workspace:WaitForChild("Merchants"):WaitForChild("QuestMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer("Claim" .. tostring(_G.CompassNumber))
+    end)
+
+	MerchantSection:NewSlider("Number of Comps", "Change the number of compasses collected", 100, 1, function(c)
+        _G.CompassNumber = c
+    end)
+
+	MerchantSection:NewButton("Expertise", "Get a expertise quest", function()
+		workspace:WaitForChild("Merchants"):WaitForChild("ExpertiseMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer()
+    end)
+
+	MerchantSection:NewButton("Expertise", "Get a expertise quest", function()
+		workspace:WaitForChild("Merchants"):WaitForChild("ExpertiseMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer()
+    end)	
+
+    MerchantSection:NewToggle("Auto Rayleigh", "Automatically do reyleigh and obtain haki", function(state)
+        if state then
+		loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoReyleigh'))()	
+        else
+            _G.Reyleigh = false
+        end
+    end)
+
 
 
     --Misc
