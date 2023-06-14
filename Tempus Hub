@@ -1,4 +1,4 @@
--- OPL GAME SCRIPT
+-- BASEPLATE GAME SCRIPT
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 local Window = Library.CreateLib("Tempus Hub", "DarkTheme")
 
@@ -47,7 +47,7 @@ if game.PlaceId == 3237168 then
 	-- MERCHANTS
 	
 	local Merchant = Window:NewTab("Merchants")
-	local MerchantSection = Main:NewSection("Merchant Remotes")
+	local MerchantSection = Merchant:NewSection("Merchant Remotes")
 	
 	MerchantSection:NewButton("Compass", "Collects a compass from sam", function()
         workspace:WaitForChild("Merchants"):WaitForChild("QuestMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer("Claim" .. tostring(_G.CompassNumber))
