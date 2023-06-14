@@ -126,10 +126,6 @@ if game.PlaceId == 3237168 then
     MiscSection:NewSlider("Safe Place Size", "Change the safe place size", 1000, 0, function(a)
         _G.PlatformSize = a
     end)
-	
-	MiscSection:NewButton
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/confidentialn/tempus/main/Hitbox", true))()
-    end)
 
 
     MerchantsSection:NewToggle("Hitbox", "Change the hitbox of other players", function()
