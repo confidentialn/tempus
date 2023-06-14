@@ -1,0 +1,166 @@
+local Players = game:GetService("Players")
+
+-- Remove existing GUI with the same name
+local existingGui = game.Players.LocalPlayer.PlayerGui:FindFirstChild("DeliveryScriptUI")
+if existingGui then
+    existingGui:Destroy()
+end
+
+-- Create the UI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "DeliveryScriptUI"
+screenGui.Parent = game.Players.LocalPlayer.PlayerGui
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 200, 0, 150)
+frame.Position = UDim2.new(0.5, -100, 0.5, -75)
+frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+frame.BackgroundTransparency = 0.5
+frame.Active = true
+frame.Draggable = true
+frame.Selectable = true
+frame.Parent = screenGui
+
+local closeButton = Instance.new("ImageButton")
+closeButton.Size = UDim2.new(0, 20, 0, 20)
+closeButton.Position = UDim2.new(1, -25, 0, 5)
+closeButton.BackgroundTransparency = 1
+closeButton.Image = "rbxassetid://385868190" -- Replace with the desired close button image ID
+closeButton.Parent = frame
+
+local onOffButton = Instance.new("TextButton")
+onOffButton.Size = UDim2.new(0, 100, 0, 30)
+onOffButton.Position = UDim2.new(0.5, -50, 0, 60)
+onOffButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+onOffButton.BorderSizePixel = 0
+onOffButton.Font = Enum.Font.GothamBold
+onOffButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+onOffButton.TextSize = 18
+onOffButton.Text = "OFF"
+onOffButton.Parent = frame
+
+local counterLabel = Instance.new("TextLabel")
+counterLabel.Size = UDim2.new(0, 200, 0, 50)
+counterLabel.Position = UDim2.new(0, 0, 0, 100)
+counterLabel.BackgroundTransparency = 1
+counterLabel.Font = Enum.Font.GothamBold
+counterLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+counterLabel.TextSize = 18
+counterLabel.Text = "Packages Delivered: 0"
+counterLabel.Parent = frame
+
+-- Styling
+local roundedCorner = Instance.new("UICorner")
+roundedCorner.CornerRadius = UDim.new(0, 10)
+roundedCorner.Parent = frame
+
+-- Close button event
+closeButton.MouseButton1Click:Connect(function()
+    screenGui:Destroy()
+end)
+
+-- Toggle button state
+local isPackageEnabled = false
+local function toggleButton()
+    isPackageEnabled = not isPackageEnabled
+    onOffButton.Text = isPackageEnabled and "ON" or "OFF"
+    onOffButton.BackgroundColor3 = isPackageEnabled and Color3.fromRGB(50, 50, 50) or Color3.fromRGB(100, 100, 100)
+end
+
+-- Toggle button event
+onOffButton.MouseButton1Click:Connect(toggleButton)
+
+-- Counter update function
+local function updateCounter()
+    local packageCount = 0
+
+    pcall(function()
+        local userId = tostring(game.Players.LocalPlayer.UserId)
+        packageCount = tonumber(game.Workspace:FindFirstChild("UserData"):FindFirstChild("User_" .. userId):FindFirstChild("Data"):FindFirstChild("NPC_Activation_Merlin").Value)
+    end)
+
+    counterLabel.Text = "Packages Delivered: " .. tostring(packageCount)
+end
+
+-- Main loop
+while wait(1) do
+    if isPackageEnabled then
+        local localPlayer = Players.LocalPlayer
+        local character = localPlayer.Character
+
+        if character then
+            local humanoid = character:FindFirstChild("Humanoid")
+
+            if humanoid then
+                wait(0.1)
+                game.Workspace.Merchants.QuestFishMerchant.Clickable.Retum:FireServer()
+
+                wait(1)
+                local hasPackage = false
+
+                for _, tool in ipairs(localPlayer.Backpack:GetChildren()) do
+                    if tool:IsA("Tool") and string.find(tool.Name, "Package") then
+                        humanoid:EquipTool(tool)
+                        tool:Activate()
+                        hasPackage = true
+                        break
+                    end
+                end
+
+                if not hasPackage then
+                    -- Delete the previous platform if it exists
+                    local previousPlatform = workspace:FindFirstChild("Platform")
+                    if previousPlatform then
+                        previousPlatform:Destroy()
+                    end
+
+                    -- Generate random X, Y, and Z coordinates
+                    local minX = -100000 -- Adjust the minimum and maximum X and Z coordinates as desired
+                    local maxX = 100000
+                    local minZ = -100000
+                    local maxZ = 100000
+                    local minY = 50000
+                    local maxY = 75000 -- Adjust the maximum Y coordinate as desired
+
+                    local randomX = math.random(minX, maxX)
+                    local randomY = math.random(minY, maxY)
+                    local randomZ = math.random(minZ, maxZ)
+
+                    -- Define the position and size of the platform
+                    local platformPosition = Vector3.new(randomX, randomY, randomZ)
+                    local platformSize = Vector3.new(60, 0.5, 60) -- Adjust the size as desired
+
+                    -- Create the platform
+                    local part = Instance.new("Part")
+                    part.Name = "Platform"
+                    part.Position = platformPosition
+                    part.Size = platformSize
+                    part.BrickColor = BrickColor.new("Medium stone grey") -- Adjust the color as desired
+                    part.Transparency = 0.3 -- Adjust the transparency as desired
+                    part.Material = Enum.Material.Granite -- Adjust the material as desired
+                    part.Anchored = true
+                    part.CanCollide = true
+                    part.Parent = workspace
+
+                    -- Teleport the player to the platform
+                    character.HumanoidRootPart.CFrame = CFrame.new(platformPosition + Vector3.new(0, platformSize.Y / 2, 0))
+                else
+                    local merchants = workspace.Merchants:GetChildren()
+                    for i = 1, #merchants do
+                        local merchant = merchants[i]
+                        if merchant:IsA("Model") and merchant:FindFirstChild("HumanoidRootPart") then
+                            local merchantName = merchant.Name
+                            if not string.find(merchantName, "Haki") then
+                                character.HumanoidRootPart.CFrame = merchant.HumanoidRootPart.CFrame * CFrame.new(0, 0, 1)
+                                wait(0.5)
+                            end
+                        end
+                    end
+                end
+
+                -- Update the counter
+                updateCounter()
+            end
+        end
+    end
+end
