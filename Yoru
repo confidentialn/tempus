@@ -17,4 +17,5 @@ while _G.Yoru do
             Yoru.RequestAnimation:FireServer(Environment.PlaceId)
         end
     end)
+    wait(0.00001)
 end
