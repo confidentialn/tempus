@@ -1,23 +1,25 @@
-local Players = game:GetService("Players")
-_G.Hitbox = true
+-- Check if the required variables are set
+if not _G.HitboxSize or not _G.HitboxColor or not _G.Hitbox then
+    error("Required variables are not set!")
+end
 
-while _G.Hitbox do
-    for _, player in ipairs(Players:GetPlayers()) do
-        if player ~= Players.LocalPlayer then
-            local character = player.Character
-            if character and character:FindFirstChild("HumanoidRootPart") then
-                local rootPart = character.HumanoidRootPart
-                if rootPart:IsA("BasePart") then
-                    -- Modify the hitbox size and color here
-                    local size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize) -- Adjust the values here to your desired size
-                    local color = _G.HitboxColor -- Use the hitbox color from _G.HitboxColor
-                    rootPart.Size = size
-                    rootPart.BrickColor = BrickColor.new(color)
-                    rootPart.Transparency = 0.9
-                end
-            end
+-- Function to modify the hitbox of other players
+local function modifyHitbox()
+    -- Get the local player
+    local player = game.Players.LocalPlayer
+
+    -- Loop through all other players
+    for _, otherPlayer in pairs(game.Players:GetPlayers()) do
+        if otherPlayer ~= player and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            -- Modify the size and color of the other player's HumanoidRootPart
+            otherPlayer.Character.HumanoidRootPart.Size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
+            otherPlayer.Character.HumanoidRootPart.BrickColor = BrickColor.new(_G.HitboxColor)
         end
     end
-    
-    wait(1) -- Wait for 1 second before the next iteration
+end
+
+-- Run the hitbox modification continuously
+while _G.Hitbox do
+    modifyHitbox()
+    wait()
 end
