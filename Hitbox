@@ -24,14 +24,3 @@ while _G.Hitbox do
     wait()
 end
 
-for i, v in next, game:GetService('Players'):GetPlayers() do
-    if v.Name ~= player.Name then
-        pcall(function()
-            v.Character.HumanoidRootPart.Size = Vector3.new(1, 2, 1)
-            v.Character.HumanoidRootPart.Transparency = 0
-            v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Bright green")
-            v.Character.HumanoidRootPart.Material = "Plastic"
-            v.Character.HumanoidRootPart.CanCollide = true
-        end)
-    end
-end
