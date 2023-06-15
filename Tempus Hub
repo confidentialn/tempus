@@ -123,6 +123,10 @@ if game.PlaceId == 3237168 then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua", true))()
     end)
 
+    ExternalSection:NewButton("Remote Spy", "Lets you see remotes", function()
+        loadstring(game:HttpGet("https://github.com/exxtremestuffs/SimpleSpySource/raw/master/SimpleSpy.lua"))()
+    end)
+	
     MiscSection:NewButton("Safe Place", "Teleports you to a safe place", function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/confidentialn/tempus/main/Safeplace", true))()
     end)
