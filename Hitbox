@@ -1,35 +1,160 @@
-local Players = game:GetService("Players")
-_G.Hitbox = true
-while _G.Hitbox do
-    for _, player in ipairs(Players:GetPlayers()) do
-        if player ~= Players.LocalPlayer then
-            local character = player.Character
-            if character and character:FindFirstChild("HumanoidRootPart") then
-                local rootPart = character.HumanoidRootPart
-                if rootPart:IsA("BasePart") then
-                    -- Modify the hitbox size and color here
-                    local size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize) -- Adjust the values here to your desired size
-                    local color = Color3.new(1, 0, 0) -- Adjust the RGB values here for your desired color
-                    rootPart.Size = size
-                    rootPart.BrickColor = BrickColor.new(color)
-                    rootPart.Transparency = 0.1
-                    
-                    -- Add an aesthetic touch to the hitbox
-                    local particleEmitter = Instance.new("ParticleEmitter")
-                    particleEmitter.Parent = rootPart
-                    particleEmitter.Texture = "rbxassetid://295927518"
-                    particleEmitter.Transparency = NumberSequence.new(0, 0.5)
-                    particleEmitter.Size = NumberSequence.new(20)
-                    particleEmitter.Lifetime = NumberRange.new(1)
-                    particleEmitter.Rate = 10
-                    particleEmitter.Speed = NumberRange.new(10)
-                    particleEmitter.Rotation = NumberRange.new(-180, 180)
-                    particleEmitter.RotSpeed = NumberRange.new(-360, 360)
-                    particleEmitter.Acceleration = Vector3.new(0, -100, 0)
-                end
+-- BASEPLATE GAME SCRIPT
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("Tempus Hub", "DarkTheme")
+
+if game.PlaceId == 3237168 then
+    -- MAIN
+    local Main = Window:NewTab("Farms")
+    local MainSection = Main:NewSection("Misc")
+
+    MainSection:NewToggle("Autofarm NPCS", "Autoteleports you to a safe place to farm NPCS", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/NPCFarm'))()
+        else
+            _G.Farming = false
+        end
+    end)
+
+    MainSection:NewButton("Package Farm", "Loads a gui to automatically complete packages", function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/PackageFarm'))()
+    end)
+
+    MainSection:NewToggle("Autofish", "Autoteleports you to a safe place to fish", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoFish'))()
+        else
+            _G.ToggleFish = false
+        end
+    end)
+    
+    MainSection:NewToggle("AutoCompass", "Auto claims and completes compasses for you", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoCompass'))()
+        else
+            _G.AutoCompass = false
+        end
+    end)
+	
+    MainSection:NewToggle("Haki Farm", "Farms haki", function(state)
+		if state then
+			loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/HakiFarm'))()
+		else
+			_G.HakiFarm = false
+		end
+	end)
+
+
+    -- LOCAL PLAYER
+    local Player = Window:NewTab("Player")
+    local PlayerSection = Player:NewSection("Player")
+
+    PlayerSection:NewSlider("Gravity", "Change the gravity", 500, 0, function(s)
+        Workspace.Gravity = s
+    end)
+
+    PlayerSection:NewSlider("Jumppower", "Change your jumppower", 350, 50, function(s)
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = s
+    end)
+
+    PlayerSection:NewButton("Reset Grav/JP", "Resets to all defaults", function()
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+        Workspace.Gravity = 196.2
+    end)
+
+    PlayerSection:NewButton("Locate Compass", "Locates compass", function()
+        local compasses = {}  -- Table to store compasses found in the inventory
+        for _, item in ipairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+            if item:IsA("Tool") and item.Name == "Compass" then
+                table.insert(compasses, item)
             end
         end
-    end
-    
-    wait(1) -- Wait for 1 second before the next iteration
+        for _, compass in ipairs(compasses) do
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
+            compass.Parent = game.Players.LocalPlayer.Character
+            compass:Activate()
+        end
+        
+        -- Equip and activate compasses
+        for _, compass in ipairs(compasses) do
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
+            compass.Parent = game.Players.LocalPlayer.Character
+            compass:Activate()
+        end
+    end)
+
+    -- MERCHANTS
+    local Merchants = Window:NewTab("Merchants")
+    local MerchantsSection = Merchants:NewSection("Merchants Remotes")
+
+    MerchantsSection:NewButton("Compass", "Collects a compass from sam", function()
+        workspace:WaitForChild("Merchants"):WaitForChild("QuestMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer("Claim" .. tostring(_G.CompassNumber))
+    end)
+
+    MerchantsSection:NewSlider("Number of Comps", "Change the number of compasses collected", 100, 1, function(c)
+        _G.CompassNumber = c
+    end)
+
+    MerchantsSection:NewButton("Expertise", "Get an expertise quest", function()
+        workspace:WaitForChild("Merchants"):WaitForChild("ExpertiseMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer()
+    end)
+
+    MerchantsSection:NewToggle("Auto Rayleigh", "Automatically do Rayleigh and obtain haki", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoRayleigh'))()
+        else
+            _G.AutoRayleigh = false
+        end
+    end)
+
+    -- MISC
+    local Misc = Window:NewTab("Misc")
+    local MiscSection = Misc:NewSection("Misc")
+    local ExternalSection = Misc:NewSection("External Scripts")
+
+    ExternalSection:NewButton("Infinite Yield", "FE Admin Commands", function()
+        loadstring(game:HttpGet(('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'), true))()
+    end)
+
+    ExternalSection:NewButton("Chat Spy", "Lets you spy on others' chats", function()
+        loadstring(game:HttpGet(('https://pastebin.com/raw/qNMunbP8'), true))()
+    end)
+
+    ExternalSection:NewButton("Dark Dex", "Lets you view game explorer", function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua", true))()
+    end)
+
+    ExternalSection:NewButton("Remote Spy", "Lets you see remotes", function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/exxtremestuffs/SimpleSpySource/master/SimpleSpy.lua", true))()
+    end)
+	
+    MiscSection:NewButton("Safe Place", "Teleports you to a safe place", function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/confidentialn/tempus/main/Safeplace", true))()
+    end)
+
+    MiscSection:NewSlider("Safe Place Size", "Change the safe place size", 1000, 0, function(a)
+        _G.PlatformSize = a
+    end)
+
+
+    MiscSection:NewToggle("Hitbox", "Change the hitbox of other players", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/Hitbox'))() 
+        else
+            _G.HitboxSize = 1
+			_G.Hitbox = false
+        end
+    end)
+	
+    MiscSection:NewSlider("Hitbox Size", "Change the hitbox size", 1000, 1, function(hit)
+        _G.HitboxSize = hit
+    end)
+	
+
+    -- SETTINGS
+    local Settings = Window:NewTab("Settings")
+    local SettingsSection = Settings:NewSection("Settings")
+
+    SettingsSection:NewKeybind("Set Keybind", "Sets your keybind (Default: P)", Enum.KeyCode.P, function()
+        Library:ToggleUI()
+    end)
 end
