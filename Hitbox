@@ -14,6 +14,7 @@ while _G.Hitbox do
                     rootPart.Size = size
                     rootPart.BrickColor = BrickColor.new(color)
                     rootPart.Transparency = 0.5 -- Set transparency to 0 to make the hitbox visible
+                    rootPart.CanCollide = false -- Disable collision with the hitbox
                 end
             end
         end
