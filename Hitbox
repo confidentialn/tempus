@@ -4,7 +4,8 @@ local player = game.Players.LocalPlayer
 -- Settings
 _G.Hitbox = false
 _G.HitboxSize = 20
-_G.HitboxColor = BrickColor.new("Really blue")
+local HitColor = _G.HitboxColor
+
 
 -- Script
 _G.Hitbox = true
