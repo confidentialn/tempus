@@ -1,8 +1,6 @@
 local RodsEq = {"Wood Rod", "Sturdy Rod", "Super Rod"}
 local user = tostring(game.Players.LocalPlayer.Name)
 
-local fishing = false -- Variable to track if the player is fishing
-
 -- Find the first rod in the inventory that matches the names in RodsEq
 for _, tool in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
     if tool:IsA("Tool") and table.find(RodsEq, tool.Name) then
@@ -28,21 +26,20 @@ if rod then
 end
 
 local platformSize = Vector3.new(10, 1, 10)
-local platformName = "Platform"
 
 -- Function to create the platform
 local function createPlatform()
-    -- Check if platform already exists
-    local previousPlatform = workspace:FindFirstChild(platformName)
-    if previousPlatform then
-        return previousPlatform
-    end
-
     local platformPosition = Vector3.new(math.random(-10000, 10000), 210, -20000)
+
+    -- Destroy the previous platform if it exists
+    local previousPlatform = workspace:FindFirstChild("Platform")
+    if previousPlatform then
+        previousPlatform:Destroy()
+    end
 
     -- Create the platform
     local part = Instance.new("Part")
-    part.Name = platformName
+    part.Name = "Platform"
     part.Position = platformPosition
     part.Size = platformSize
     part.BrickColor = BrickColor.new("Medium stone grey")
@@ -52,36 +49,19 @@ local function createPlatform()
     part.CanCollide = true
     part.Parent = workspace
 
-    return part
-end
-
--- Teleport the player on top of the platform
-local function teleportToPlatform(platform)
+    -- Teleport the player on top of the platform
     local localPlayer = game.Players.LocalPlayer
     local character = localPlayer.Character
     if character and character:FindFirstChild("HumanoidRootPart") then
-        character.HumanoidRootPart.CFrame = CFrame.new(platform.Position + Vector3.new(0, platform.Size.Y / 2 + character.Humanoid.HipHeight, 0))
+        character.HumanoidRootPart.CFrame = CFrame.new(platformPosition + Vector3.new(0, platformSize.Y / 2 + character.Humanoid.HipHeight, 0))
     end
 end
 
--- Check if the player is already fishing
-local function isFishing()
-    local character = game.Players.LocalPlayer.Character
-    local rod = character:FindFirstChild(RodsEq)
-    if rod then
-        return game.Workspace[user][RodsEq].Cast.Bobber.Effect.Enabled
-    end
-    return false
-end
+createPlatform() -- Create the initial platform
 
--- Function to perform fishing actions
-local function AutoFish()
-    -- Check if already fishing
-    if fishing or isFishing() then
-        return
-    end
+wait(1)
 
-    fishing = true -- Set fishing flag to true
+function AutoFish()
     local character = game.Players.LocalPlayer.Character
     local rod = character:FindFirstChild(RodsEq)
 
@@ -98,16 +78,12 @@ local function AutoFish()
 
         rod.Click:FireServer(unpack(args)) -- Additional rod click after the bobber effect is enabled
     end
-
-    fishing = false -- Set fishing flag to false
 end
 
 _G.toggleFish = true
 
 while _G.toggleFish do
     if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").Name == RodsEq then
-        local platform = createPlatform()
-        teleportToPlatform(platform)
         AutoFish()
         wait(1) -- Delay after each fishing attempt (adjust as needed)
     end
