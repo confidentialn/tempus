@@ -26,10 +26,8 @@ while _G.AutoCompass do
     end
 
     -- Gain more compasses
-    local questMerchant = workspace.Merchants:WaitForChild("QuestMerchant")
-    local clickable = questMerchant:WaitForChild("Clickable")
-    local retum = clickable:WaitForChild("Retum")
-    retum:FireServer("Claim1"))
+    workspace.Merchants.QuestMerchant.Clickable.Retum:FireServer("Claim1")
+
 
     wait(0.1) -- Wait for a short duration before the next iteration
 end
