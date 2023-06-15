@@ -35,9 +35,13 @@ if game.PlaceId == 3237168 then
         end
     end)
 	
-    MainSection:NewButton("Haki Farm", "Farms haki", function()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/HakiFarm'))()
-    end)
+    MainSection:NewToggle("Haki Farm", "Farms haki", function(state)
+		if state then
+			loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/HakiFarm'))()
+		else
+			_G.HakiFarm = false
+		end
+	end)
 
 
     -- LOCAL PLAYER
@@ -128,7 +132,7 @@ if game.PlaceId == 3237168 then
     end)
 
 
-    MiscSection:NewToggle("Hitbox", "Change the hitbox of other players", function()
+    MiscSection:NewToggle("Hitbox", "Change the hitbox of other players", function(state)
         if state then
             loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/Hitbox'))() 
         else
