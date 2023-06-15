@@ -1,4 +1,5 @@
 -- Check if the required variables are set
+_G.Hitbox = true
 if not _G.HitboxSize or not _G.HitboxColor or not _G.Hitbox then
     error("Required variables are not set!")
 end
