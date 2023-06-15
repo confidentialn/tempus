@@ -15,7 +15,7 @@ while _G.Hitbox do
             pcall(function()
                 v.Character.HumanoidRootPart.Size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
                 v.Character.HumanoidRootPart.Transparency = 0.5
-                v.Character.HumanoidRootPart.BrickColor = Color3.fromRGB(_G.HitboxColor)
+                v.Character.HumanoidRootPart.BrickColor = Color3.fromRGB(_G.HitboxColor[1], _G.HitboxColor[2], _G.HitboxColor[3])
                 v.Character.HumanoidRootPart.Material = "Neon"
                 v.Character.HumanoidRootPart.CanCollide = false
             end)
