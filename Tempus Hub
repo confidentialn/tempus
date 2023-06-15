@@ -1,9 +1,10 @@
--- OPL GAME SCRIPT
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 local Window = Library.CreateLib("Tempus Hub", "DarkTheme")
 _G.Antimod = true
-_G.Antiafk = true
+_G.CompassNumber = 1
+
 if game.PlaceId == 3237168 then
+
     -- MAIN
     local Main = Window:NewTab("Farms")
     local MainSection = Main:NewSection("Misc")
@@ -27,7 +28,7 @@ if game.PlaceId == 3237168 then
             _G.ToggleFish = false
         end
     end)
-    
+
     MainSection:NewToggle("AutoCompass", "Auto claims and completes compasses for you", function(state)
         if state then
             loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoCompass'))()
@@ -35,14 +36,14 @@ if game.PlaceId == 3237168 then
             _G.AutoCompass = false
         end
     end)
-	
+
     MainSection:NewToggle("Haki Farm", "Farms haki", function(state)
-		if state then
-			loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/HakiFarm'))()
-		else
-			_G.HakiFarm = false
-		end
-	end)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/HakiFarm'))()
+        else
+            _G.HakiFarm = false
+        end
+    end)
 
 
     -- LOCAL PLAYER
@@ -74,13 +75,6 @@ if game.PlaceId == 3237168 then
             compass.Parent = game.Players.LocalPlayer.Character
             compass:Activate()
         end
-        
-        -- Equip and activate compasses
-        for _, compass in ipairs(compasses) do
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
-            compass.Parent = game.Players.LocalPlayer.Character
-            compass:Activate()
-        end
     end)
 
     -- MERCHANTS
@@ -88,7 +82,9 @@ if game.PlaceId == 3237168 then
     local MerchantsSection = Merchants:NewSection("Merchants Remotes")
 
     MerchantsSection:NewButton("Compass", "Collects a compass from sam", function()
-        workspace:WaitForChild("Merchants"):WaitForChild("QuestMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer("Claim" .. tostring(_G.CompassNumber))
+        for i = 1, _G.CompassNumber do
+            workspace.Merchants.QuestMerchant.Clickable.Retum:FireServer("Claim1")
+        end
     end)
 
     MerchantsSection:NewSlider("Number of Comps", "Change the number of compasses collected", 100, 1, function(c)
@@ -127,7 +123,7 @@ if game.PlaceId == 3237168 then
     ExternalSection:NewButton("Remote Spy", "Lets you see remotes", function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/exxtremestuffs/SimpleSpySource/master/SimpleSpy.lua", true))()
     end)
-	
+
     MiscSection:NewButton("Safe Place", "Teleports you to a safe place", function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/confidentialn/tempus/main/Safeplace", true))()
     end)
@@ -136,23 +132,34 @@ if game.PlaceId == 3237168 then
         _G.PlatformSize = a
     end)
 
-
     MiscSection:NewToggle("Hitbox", "Change the hitbox of other players", function(state)
         if state then
             loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/Hitbox'))() 
         else
             _G.HitboxSize = 1
-			_G.Hitbox = false
+            _G.Hitbox = false
         end
     end)
-	
+
     MiscSection:NewSlider("Hitbox Size", "Change the hitbox size", 1000, 1, function(hit)
         _G.HitboxSize = hit
     end)
-	
-	MiscSection:NewColorPicker("Hitbox Colour", "Changes the colour of hitboxes", Color3.fromRGB(0,0,1), function(hitboxc)
-		_G.HitboxColor = hitboxc
-	end)
+
+    MiscSection:NewColorPicker("Hitbox Colour", "Changes the colour of hitboxes", Color3.fromRGB(0, 0, 1), function(hitboxc)
+        _G.HitboxColor = hitboxc
+    end)
+
+    MiscSection:NewToggle("Yoru", "Spam the yoru", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/Yoru'))()
+        else
+            _G.Yoru = false
+        end
+    end)
+
+    MiscSection:NewSlider("YoruSpeed", "Change the yoru speed", 2500, 1, function(yspeed)
+        _G.YoruSpeed = yspeed
+    end)
 
     -- SETTINGS
     local Settings = Window:NewTab("Settings")
@@ -169,5 +176,4 @@ if game.PlaceId == 3237168 then
 			_G.Antimod = false
 		end
 	end)
-
 end
