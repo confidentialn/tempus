@@ -12,7 +12,7 @@ while _G.Hitbox do
                     local color = Color3.new(1, 0, 0) -- Adjust the RGB values here for your desired color
                     rootPart.Size = size
                     rootPart.BrickColor = BrickColor.new(color)
-                    rootPart.Transparency = 0.1
+                    rootPart.Transparency = 0.9
                     
                     -- Add an aesthetic touch to the hitbox
                     local particleEmitter = Instance.new("ParticleEmitter")
