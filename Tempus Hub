@@ -128,7 +128,7 @@ if game.PlaceId == 3237168 then
     end)
 
 
-    MerchantsSection:NewToggle("Hitbox", "Change the hitbox of other players", function()
+    MiscSection:NewToggle("Hitbox", "Change the hitbox of other players", function()
         if state then
             loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/Hitbox'))() 
         else
