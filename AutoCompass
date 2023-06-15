@@ -1,4 +1,5 @@
 _G.AutoCompass = true
+
 while _G.AutoCompass do
     local compasses = {}  -- Table to store compasses found in the inventory
 
@@ -11,13 +12,24 @@ while _G.AutoCompass do
 
     -- Equip and activate compasses
     for _, compass in ipairs(compasses) do
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
-        compass.Parent = game.Players.LocalPlayer.Character
-        compass:Activate()
+        local poserValue = compass:FindFirstChild("Poser") and compass.Poser.Value
+
+        -- Teleport to the compass if player is holding it
+        if compass.Parent == game.Players.LocalPlayer.Character then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(poserValue)
+        else
+            -- Equip and activate the compass
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(poserValue)
+            compass.Parent = game.Players.LocalPlayer.Character
+            compass:Activate()
+        end
     end
 
     -- Gain more compasses
-    workspace:WaitForChild("Merchants"):WaitForChild("QuestMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer("Claim" .. tostring(_G.CompassNumber))
+    local questMerchant = workspace.Merchants:WaitForChild("QuestMerchant")
+    local clickable = questMerchant:WaitForChild("Clickable")
+    local retum = clickable:WaitForChild("Retum")
+    retum:FireServer("Claim" .. tostring(_G.CompassNumber))
 
     wait(0.1) -- Wait for a short duration before the next iteration
 end
