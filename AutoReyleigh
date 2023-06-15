@@ -1,6 +1,7 @@
-_G.Reyleigh = true
-while _G.Reyleigh = true
-  wait(5)
-  workspace.Merchants.QuestHakiMerchant.Clickable.Retum:FireServer()
-  game:GetService("Players").LocalPlayer.Character.Mark3:FireServer()
+_G.Rayleigh = true
+
+while _G.Rayleigh do
+    wait(10)
+    workspace.Merchants.QuestHakiMerchant.Clickable.Retum:FireServer()
+    game:GetService("Players").LocalPlayer.Character.Mark3:FireServer()
 end
