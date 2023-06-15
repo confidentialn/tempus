@@ -13,19 +13,6 @@ while _G.Hitbox do
                     rootPart.Size = size
                     rootPart.BrickColor = BrickColor.new(color)
                     rootPart.Transparency = 0.9
-                    
-                    -- Add an aesthetic touch to the hitbox
-                    local particleEmitter = Instance.new("ParticleEmitter")
-                    particleEmitter.Parent = rootPart
-                    particleEmitter.Texture = "rbxassetid://295927518"
-                    particleEmitter.Transparency = NumberSequence.new(0, 0.5)
-                    particleEmitter.Size = NumberSequence.new(20)
-                    particleEmitter.Lifetime = NumberRange.new(1)
-                    particleEmitter.Rate = 10
-                    particleEmitter.Speed = NumberRange.new(10)
-                    particleEmitter.Rotation = NumberRange.new(-180, 180)
-                    particleEmitter.RotSpeed = NumberRange.new(-360, 360)
-                    particleEmitter.Acceleration = Vector3.new(0, -100, 0)
                 end
             end
         end
