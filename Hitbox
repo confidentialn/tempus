@@ -3,11 +3,11 @@ if not _G.HitboxSize or not _G.HitboxColor or not _G.Hitbox then
     error("Required variables are not set!")
 end
 
--- Function to modify the hitbox of other players
-local function modifyHitbox()
-    -- Get the local player
-    local player = game.Players.LocalPlayer
+-- Get the local player
+local player = game.Players.LocalPlayer
 
+-- Run the hitbox modification continuously
+while _G.Hitbox do
     -- Loop through all other players
     for _, otherPlayer in pairs(game.Players:GetPlayers()) do
         if otherPlayer ~= player and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
@@ -16,10 +16,5 @@ local function modifyHitbox()
             otherPlayer.Character.HumanoidRootPart.BrickColor = BrickColor.new(_G.HitboxColor)
         end
     end
-end
-
--- Run the hitbox modification continuously
-while _G.Hitbox do
-    modifyHitbox()
     wait()
 end
