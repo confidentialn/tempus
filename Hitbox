@@ -10,7 +10,7 @@ while _G.Hitbox do
                 if rootPart:IsA("BasePart") then
                     -- Modify the hitbox size and color here
                     local size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize) -- Adjust the values here to your desired size
-                    local color = _G.HitboxColor or Color3.fromRGB(1, 0, 0) -- Use the hitbox color from _G.HitboxColor or default to Color3.fromRGB(0, 0, 1)
+                    local color = _G.HitboxColor 
                     rootPart.Size = size
                     rootPart.BrickColor = BrickColor.new(color)
                     rootPart.Transparency = 0.5 -- Set transparency to 0 to make the hitbox visible
