@@ -1,92 +1,160 @@
-local RodsEq = {"Wood Rod", "Sturdy Rod", "Super Rod"}
-local user = tostring(game.Players.LocalPlayer.Name)
+-- BASEPLATE GAME SCRIPT
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("Tempus Hub", "DarkTheme")
 
--- Find the first rod in the inventory that matches the names in RodsEq
-for _, tool in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-    if tool:IsA("Tool") and table.find(RodsEq, tool.Name) then
-        RodsEq = tool.Name
-        break
-    end
-end
+if game.PlaceId == 3237168 then
+    -- MAIN
+    local Main = Window:NewTab("Farms")
+    local MainSection = Main:NewSection("Misc")
 
-if not RodsEq then
-    warn("No suitable rod found in inventory.")
-    return
-end
+    MainSection:NewToggle("Autofarm NPCS", "Autoteleports you to a safe place to farm NPCS", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/NPCFarm'))()
+        else
+            _G.Farming = false
+        end
+    end)
 
-for i, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
-    if v:IsA("Tool") and v.Name ~= RodsEq then
-        v.Parent = game.Players.LocalPlayer.Backpack
-    end
-end
+    MainSection:NewButton("Package Farm", "Loads a gui to automatically complete packages", function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/PackageFarm'))()
+    end)
 
-local rod = game.Players.LocalPlayer.Backpack:FindFirstChild(RodsEq)
-if rod then
-    rod.Parent = game.Players.LocalPlayer.Character
-end
-
-local platformSize = Vector3.new(10, 1, 10)
-
--- Function to create the platform
-local function createPlatform()
-    local platformPosition = Vector3.new(math.random(-10000, 10000), 210, -20000)
-
-    -- Destroy the previous platform if it exists
-    local previousPlatform = workspace:FindFirstChild("Platform")
-    if previousPlatform then
-        previousPlatform:Destroy()
-    end
-
-    -- Create the platform
-    local part = Instance.new("Part")
-    part.Name = "Platform"
-    part.Position = platformPosition
-    part.Size = platformSize
-    part.BrickColor = BrickColor.new("Medium stone grey")
-    part.Transparency = 0.3
-    part.Material = Enum.Material.Granite
-    part.Anchored = true
-    part.CanCollide = true
-    part.Parent = workspace
-
-    -- Teleport the player on top of the platform
-    local localPlayer = game.Players.LocalPlayer
-    local character = localPlayer.Character
-    if character and character:FindFirstChild("HumanoidRootPart") then
-        character.HumanoidRootPart.CFrame = CFrame.new(platformPosition + Vector3.new(0, platformSize.Y / 2 + character.Humanoid.HipHeight, 0))
-    end
-end
-
-createPlatform() -- Create the initial platform
-
-wait(1)
-
-function AutoFish()
-    local character = game.Players.LocalPlayer.Character
-    local rod = character:FindFirstChild(RodsEq)
-
-    if rod then
-        local args = {
-            [1] = character.HumanoidRootPart.CFrame.Position
-        }
-
-        rod.Click:FireServer(unpack(args))
-
-        repeat
-            wait(2)
-        until game.Workspace[user][RodsEq].Cast.Bobber.Effect.Enabled == true
-
-        rod.Click:FireServer(unpack(args)) -- Additional rod click before creating the platform
+    MainSection:NewToggle("Autofish", "Autoteleports you to a safe place to fish", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoFish'))()
+        else
+            _G.ToggleFish = false
+        end
+    end)
+    
+    MainSection:NewToggle("AutoCompass", "Auto claims and completes compasses for you", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoCompass'))()
+        else
+            _G.AutoCompass = false
+        end
+    end)
+	
+    MainSection:NewToggle("Haki Farm", "Farms haki", function(state)
+		if state then
+			loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/HakiFarm'))()
+		else
+			_G.HakiFarm = false
+		end
+	end)
 
 
-    end
-end
+    -- LOCAL PLAYER
+    local Player = Window:NewTab("Player")
+    local PlayerSection = Player:NewSection("Player")
 
-_G.toggleFish = true
+    PlayerSection:NewSlider("Gravity", "Change the gravity", 500, 0, function(s)
+        Workspace.Gravity = s
+    end)
 
-while _G.toggleFish do
-    if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").Name == RodsEq then
-        AutoFish()
-        wait(5)
-    end
+    PlayerSection:NewSlider("Jumppower", "Change your jumppower", 350, 50, function(s)
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = s
+    end)
+
+    PlayerSection:NewButton("Reset Grav/JP", "Resets to all defaults", function()
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+        Workspace.Gravity = 196.2
+    end)
+
+    PlayerSection:NewButton("Locate Compass", "Locates compass", function()
+        local compasses = {}  -- Table to store compasses found in the inventory
+        for _, item in ipairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+            if item:IsA("Tool") and item.Name == "Compass" then
+                table.insert(compasses, item)
+            end
+        end
+        for _, compass in ipairs(compasses) do
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
+            compass.Parent = game.Players.LocalPlayer.Character
+            compass:Activate()
+        end
+        
+        -- Equip and activate compasses
+        for _, compass in ipairs(compasses) do
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
+            compass.Parent = game.Players.LocalPlayer.Character
+            compass:Activate()
+        end
+    end)
+
+    -- MERCHANTS
+    local Merchants = Window:NewTab("Merchants")
+    local MerchantsSection = Merchants:NewSection("Merchants Remotes")
+
+    MerchantsSection:NewButton("Compass", "Collects a compass from sam", function()
+        workspace:WaitForChild("Merchants"):WaitForChild("QuestMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer("Claim" .. tostring(_G.CompassNumber))
+    end)
+
+    MerchantsSection:NewSlider("Number of Comps", "Change the number of compasses collected", 100, 1, function(c)
+        _G.CompassNumber = c
+    end)
+
+    MerchantsSection:NewButton("Expertise", "Get an expertise quest", function()
+        workspace:WaitForChild("Merchants"):WaitForChild("ExpertiseMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer()
+    end)
+
+    MerchantsSection:NewToggle("Auto Rayleigh", "Automatically do Rayleigh and obtain haki", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoRayleigh'))()
+        else
+            _G.AutoRayleigh = false
+        end
+    end)
+
+    -- MISC
+    local Misc = Window:NewTab("Misc")
+    local MiscSection = Misc:NewSection("Misc")
+    local ExternalSection = Misc:NewSection("External Scripts")
+
+    ExternalSection:NewButton("Infinite Yield", "FE Admin Commands", function()
+        loadstring(game:HttpGet(('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'), true))()
+    end)
+
+    ExternalSection:NewButton("Chat Spy", "Lets you spy on others' chats", function()
+        loadstring(game:HttpGet(('https://pastebin.com/raw/qNMunbP8'), true))()
+    end)
+
+    ExternalSection:NewButton("Dark Dex", "Lets you view game explorer", function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua", true))()
+    end)
+
+    ExternalSection:NewButton("Remote Spy", "Lets you see remotes", function()
+        loadstring(game:HttpGet("https://github.com/exxtremestuffs/SimpleSpySource/raw/master/SimpleSpy.lua", true))()
+    end)
+	
+    MiscSection:NewButton("Safe Place", "Teleports you to a safe place", function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/confidentialn/tempus/main/Safeplace", true))()
+    end)
+
+    MiscSection:NewSlider("Safe Place Size", "Change the safe place size", 1000, 0, function(a)
+        _G.PlatformSize = a
+    end)
+
+
+    MiscSection:NewToggle("Hitbox", "Change the hitbox of other players", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/Hitbox'))() 
+        else
+            G.HitboxSize = 1
+			_G.Hitbox = false
+        end
+    end)
+	
+    MiscSection:NewSlider("Hitbox Size", "Change the hitbox size", 1000, 1, function(hit)
+        _G.HitboxSize = hit
+    end)
+	
+
+    -- SETTINGS
+    local Settings = Window:NewTab("Settings")
+    local SettingsSection = Settings:NewSection("Settings")
+
+    SettingsSection:NewKeybind("Set Keybind", "Sets your keybind (Default: P)", Enum.KeyCode.P, function()
+        Library:ToggleUI()
+    end)
 end
