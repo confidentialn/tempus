@@ -1,166 +1,276 @@
-local Players = game:GetService("Players")
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("Tempus Hub", "DarkTheme")
+_G.Antimod = true
+_G.CompassNumber = 1
 
--- Remove existing GUI with the same name
-local existingGui = game.Players.LocalPlayer.PlayerGui:FindFirstChild("DeliveryScriptUI")
-if existingGui then
-    existingGui:Destroy()
-end
+if game.PlaceId == 3237168 then
 
--- Create the UI
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "DeliveryScriptUI"
-screenGui.Parent = game.Players.LocalPlayer.PlayerGui
+    -- MAIN
+    local Main = Window:NewTab("Farms")
+    local MainSection = Main:NewSection("Misc")
 
-local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 200, 0, 150)
-frame.Position = UDim2.new(0.5, -100, 0.5, -75)
-frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-frame.BackgroundTransparency = 0.5
-frame.Active = true
-frame.Draggable = true
-frame.Selectable = true
-frame.Parent = screenGui
-
-local closeButton = Instance.new("ImageButton")
-closeButton.Size = UDim2.new(0, 20, 0, 20)
-closeButton.Position = UDim2.new(1, -25, 0, 5)
-closeButton.BackgroundTransparency = 1
-closeButton.Image = "rbxassetid://385868190" -- Replace with the desired close button image ID
-closeButton.Parent = frame
-
-local onOffButton = Instance.new("TextButton")
-onOffButton.Size = UDim2.new(0, 100, 0, 30)
-onOffButton.Position = UDim2.new(0.5, -50, 0, 60)
-onOffButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-onOffButton.BorderSizePixel = 0
-onOffButton.Font = Enum.Font.GothamBold
-onOffButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-onOffButton.TextSize = 18
-onOffButton.Text = "OFF"
-onOffButton.Parent = frame
-
-local counterLabel = Instance.new("TextLabel")
-counterLabel.Size = UDim2.new(0, 200, 0, 50)
-counterLabel.Position = UDim2.new(0, 0, 0, 100)
-counterLabel.BackgroundTransparency = 1
-counterLabel.Font = Enum.Font.GothamBold
-counterLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-counterLabel.TextSize = 18
-counterLabel.Text = "Packages Delivered: 0"
-counterLabel.Parent = frame
-
--- Styling
-local roundedCorner = Instance.new("UICorner")
-roundedCorner.CornerRadius = UDim.new(0, 10)
-roundedCorner.Parent = frame
-
--- Close button event
-closeButton.MouseButton1Click:Connect(function()
-    screenGui:Destroy()
-end)
-
--- Toggle button state
-local isPackageEnabled = false
-local function toggleButton()
-    isPackageEnabled = not isPackageEnabled
-    onOffButton.Text = isPackageEnabled and "ON" or "OFF"
-    onOffButton.BackgroundColor3 = isPackageEnabled and Color3.fromRGB(50, 50, 50) or Color3.fromRGB(100, 100, 100)
-end
-
--- Toggle button event
-onOffButton.MouseButton1Click:Connect(toggleButton)
-
--- Counter update function
-local function updateCounter()
-    local packageCount = 0
-
-    pcall(function()
-        local userId = tostring(game.Players.LocalPlayer.UserId)
-        packageCount = tonumber(game.Workspace:FindFirstChild("UserData"):FindFirstChild("User_" .. userId):FindFirstChild("Data"):FindFirstChild("NPC_Activation_Merlin").Value)
+    MainSection:NewToggle("Autofarm NPCS", "Autoteleports you to a safe place to farm NPCS", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/NPCFarm'))()
+        else
+            _G.Farming = false
+        end
     end)
 
-    counterLabel.Text = "Packages Delivered: " .. tostring(packageCount)
-end
+    MainSection:NewButton("Package Farm", "Loads a gui to automatically complete packages", function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/PackageFarm'))()
+    end)
 
--- Main loop
-while wait(1) do
-    if isPackageEnabled then
-        local localPlayer = Players.LocalPlayer
-        local character = localPlayer.Character
+    MainSection:NewToggle("Autofish", "Autoteleports you to a safe place to fish", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoFish'))()
+        else
+            _G.ToggleFish = false
+        end
+    end)
 
-        if character then
-            local humanoid = character:FindFirstChild("Humanoid")
+    MainSection:NewToggle("AutoCompass", "Auto claims and completes compasses for you", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoCompass'))()
+        else
+            _G.AutoCompass = false
+        end
+    end)
 
-            if humanoid then
-                wait(0.1)
-                game.Workspace.Merchants.QuestFishMerchant.Clickable.Retum:FireServer()
+    MainSection:NewToggle("Haki Farm", "Farms haki", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/HakiFarm'))()
+        else
+            _G.HakiFarm = false
+        end
+    end)
 
-                wait(1)
-                local hasPackage = false
 
-                for _, tool in ipairs(localPlayer.Backpack:GetChildren()) do
-                    if tool:IsA("Tool") and string.find(tool.Name, "Package") then
-                        humanoid:EquipTool(tool)
-                        tool:Activate()
-                        hasPackage = true
-                        break
-                    end
-                end
+    -- LOCAL PLAYER
+    local Player = Window:NewTab("Player")
+    local PlayerSection = Player:NewSection("Player")
 
-                if not hasPackage then
-                    -- Delete the previous platform if it exists
-                    local previousPlatform = workspace:FindFirstChild("Platform")
-                    if previousPlatform then
-                        previousPlatform:Destroy()
-                    end
+    PlayerSection:NewSlider("Gravity", "Change the gravity", 500, 0, function(s)
+        Workspace.Gravity = s
+    end)
 
-                    -- Generate random X, Y, and Z coordinates
-                    local minX = -100000 -- Adjust the minimum and maximum X and Z coordinates as desired
-                    local maxX = 100000
-                    local minZ = -100000
-                    local maxZ = 100000
-                    local minY = 50000
-                    local maxY = 75000 -- Adjust the maximum Y coordinate as desired
+    PlayerSection:NewSlider("Jumppower", "Change your jumppower", 350, 50, function(s)
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = s
+    end)
 
-                    local randomX = math.random(minX, maxX)
-                    local randomY = math.random(minY, maxY)
-                    local randomZ = math.random(minZ, maxZ)
+    PlayerSection:NewButton("Reset Grav/JP", "Resets to all defaults", function()
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+        Workspace.Gravity = 196.2
+    end)
 
-                    -- Define the position and size of the platform
-                    local platformPosition = Vector3.new(randomX, randomY, randomZ)
-                    local platformSize = Vector3.new((_G.PlatformSize, 1, _G.PlatformSize) -- Adjust the size as desired
-
-                    -- Create the platform
-                    local part = Instance.new("Part")
-                    part.Name = "Platform"
-                    part.Position = platformPosition
-                    part.Size = platformSize
-                    part.BrickColor = BrickColor.new("Medium stone grey") -- Adjust the color as desired
-                    part.Transparency = 0.3 -- Adjust the transparency as desired
-                    part.Material = Enum.Material.Granite -- Adjust the material as desired
-                    part.Anchored = true
-                    part.CanCollide = true
-                    part.Parent = workspace
-
-                    -- Teleport the player to the platform
-                    character.HumanoidRootPart.CFrame = CFrame.new(platformPosition + Vector3.new(0, platformSize.Y / 2, 0))
-                else
-                    local merchants = workspace.Merchants:GetChildren()
-                    for i = 1, #merchants do
-                        local merchant = merchants[i]
-                        if merchant:IsA("Model") and merchant:FindFirstChild("HumanoidRootPart") then
-                            local merchantName = merchant.Name
-                            if not string.find(merchantName, "Haki") then
-                                character.HumanoidRootPart.CFrame = merchant.HumanoidRootPart.CFrame * CFrame.new(0, 0, 1)
-                                wait(0.5)
-                            end
-                        end
-                    end
-                end
-
-                -- Update the counter
-                updateCounter()
+    PlayerSection:NewButton("Locate Compass", "Locates compass", function()
+        local compasses = {}  -- Table to store compasses found in the inventory
+        for _, item in ipairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+            if item:IsA("Tool") and item.Name == "Compass" then
+                table.insert(compasses, item)
             end
         end
-    end
+        for _, compass in ipairs(compasses) do
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(compass.Poser.Value)
+            compass.Parent = game.Players.LocalPlayer.Character
+            compass:Activate()
+        end
+    end)
+
+    PlayerSection:NewToggle("Yoru", "Spam the yoru", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/Yoru'))()
+        else
+            _G.Yoru = false
+        end
+    end)
+
+    PlayerSection:NewSlider("YoruSpeed", "Change the yoru speed", 2500, 1, function(yspeed)
+        _G.YoruSpeed = yspeed
+    end)
+	
+	-- TELEPORTS
+	
+	local TP = Window:NewTab("Teleports")
+	local TPSection = TP:NewSection("Teleports")
+
+	TPSection:NewDropdown("Island Teleports", "Teleports you to chosen island", {"Sand", "RaceTrack" , "Disco" ,"Cave", "MarineFort" ,"Sam", "Krizma", "Moss" , "Expertise", "Mansion" , "Tall Trees" , "Dead Trees", "Pyramid", "BigSnow", "Little Snow", "Vokkun", "Kaizu", "Purple", "Pursuer","SandCastle"}, function(currentOption)
+	if currentOption == "Expertise" then
+	game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(902.105103, 282.199921, 1219.1825, 0.000111424371, -4.80737405e-08, 1, -5.58505509e-09, 1, 4.80743623e-08, -1, -5.59041169e-09, 0.000111424371)
+	end
+
+	if currentOption == "Krizma" then
+	game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1074.2793, 360.999908, 1687.67566, 0.998138607, -2.49312624e-08, 0.0609866381, 1.98675316e-08, 1, 8.3636543e-08, -0.0609866381, -8.22692101e-08, 0.998138607)
+	   end
+
+	if currentOption == "Sand" then
+		for i,v in pairs(game.Workspace.IslandWindmill:GetDescendants()) do
+			if v.Name == "Part" then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+			end
+			end    end  
+
+	if currentOption == "Cave" then
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(76.3779144, 299.999908, -916.032043, 0.0174713228, -3.14204591e-08, 0.999847353, 5.21297814e-08, 1, 3.05143395e-08, -0.999847353, 5.15886995e-08, 0.0174713228)
+	end
+
+	if currentOption == "SandCastle" then
+		for i,v in pairs(game.Workspace.IslandSandCastle:GetDescendants()) do
+			if v.Name == "Part" then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+			end
+			end    end
+	  
+	if currentOption == "Sam" then
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1298.30603, 217.999954, -1352.47571, 0.017669782, -1.08078257e-08, 0.999843895, -7.31044647e-09, 1, 1.09387068e-08, -0.999843895, -7.50258966e-09, 0.017669782)
+	end
+
+	if currentOption == "Mansion" then
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1818.72119, 218, 881.086304, 0.707021296, 6.48462928e-09, -0.707192302, -5.54870603e-08, 1, -4.63041019e-08, 0.707192302, 7.19780076e-08, 0.707021296)
+	end
+
+	if currentOption == "Dead Trees" then
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2053.56348, 491.999908, -603.457642, 0.999845803, -6.42047766e-08, -0.0175616108, 6.59244677e-08, 1, 9.73443264e-08, 0.0175616108, -9.84870496e-08, 0.999845803)
+	end
+
+	if currentOption == "Moss" then
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2606.74414, 269.599915, 1098.1311, 0.0525588207, -5.60069324e-09, 0.998617828, -1.80996815e-10, 1, 5.61797142e-09, -0.998617828, -4.76020612e-10, 0.0525588207)
+	end
+
+	if currentOption == "RaceTrack" then
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-6056.94434, 217.643265, 3332.71924, -0.824234724, -3.06996917e-08, -0.566248238, -9.82805215e-09, 1, -3.991018e-08, 0.566248238, -2.73302394e-08, -0.824234724)
+	end
+	  
+	if currentOption == "Little Snow" then
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1897.03699, 224.999954, 3295.97852, 0.422415107, -1.19760401e-07, -0.906402469, 5.81015094e-08, 1, -1.05049857e-07, 0.906402469, -8.28870661e-09, 0.422415107)
+	end
+
+	if currentOption == "Pyramid" then
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(117.47625, 277.999908, 4948.05713, -0.688197017, 3.47416451e-09, 0.725523829, -6.7682937e-10, 1, -5.43049916e-09, -0.725523829, -4.22830926e-09, -0.688197017)
+	end
+
+	if currentOption == "BigSnow" then
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(6640.6499, 417.998901, -1478.11169, -0.294113189, 6.32640322e-08, -0.955770612, 2.0722144e-08, 1, 5.98149583e-08, 0.955770612, -2.21324803e-09, -0.294113189)
+	end
+
+	if currentOption == "MarineFort" then
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-3134.58325, 275.799927, -3652.50513, 0.99999994, -9.04243613e-09, -0.000312123768, 9.0418677e-09, 1, -1.82297777e-09, 0.000312123768, 1.82015547e-09, 0.99999994)
+	end
+
+	if currentOption == "Purple" then
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-5285.72803, 515.999817, -7745.1543, -0.999651134, 6.1504144e-09, 0.0264117159, 3.64631259e-09, 1, -9.48584287e-08, -0.0264117159, -9.47290317e-08, -0.999651134)
+	end
+
+	if currentOption == "Disco" then
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1521.71997, 260.38623, 2187.73511, 1, 8.61509197e-11, 7.85281545e-16, -8.61509197e-11, 1, -9.82245325e-08, -7.93743669e-16, 9.82245325e-08, 1)
+	end
+
+	if currentOption == "Tall Trees" then
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-6032.78955, 401.999908, 4.39634514, -0.999964476, 1.89321381e-09, -0.00843126699, 1.84625704e-09, 1, 5.57713209e-09, 0.00843126699, 5.56136781e-09, -0.999964476)
+	end
+
+	if currentOption == "Vokkun" then
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4572.5, 217.399857, 5094.63428, -0.999854326, 3.65839306e-08, -0.0170693286, 3.71540878e-08, 1, -3.30852146e-08, 0.0170693286, -3.37145885e-08, -0.999854326)
+	end
+
+	if currentOption == "Pursuer" then
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4846.59082, 569.999817, -7142.89258, 0.996175706, -2.08068229e-09, -0.087372601, 9.85005189e-10, 1, -1.25833957e-08, 0.087372601, 1.24492106e-08, 0.996175706)
+	end
+
+	if currentOption == "Kaizu" then
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1589.06714, 215.999954, 9941.59766, -0.0209177006, -8.02182285e-08, -0.999781191, 4.7343427e-08, 1, -8.1226311e-08, 0.999781191, -4.90321348e-08, -0.0209177006)
+	end
+
+	if currentOption == "Kaizu" then
+		game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1589.06714, 215.999954, 9941.59766, -0.0209177006, -8.02182285e-08, -0.999781191, 4.7343427e-08, 1, -8.1226311e-08, 0.999781191, -4.90321348e-08, -0.0209177006)
+	end
+	end)
+		
+    -- MERCHANTS
+    local Merchants = Window:NewTab("Merchants")
+    local MerchantsSection = Merchants:NewSection("Merchants Remotes")
+
+    MerchantsSection:NewButton("Compass", "Collects a compass from sam", function()
+        for i = 1, _G.CompassNumber do
+            workspace.Merchants.QuestMerchant.Clickable.Retum:FireServer("Claim1")
+        end
+    end)
+
+    MerchantsSection:NewSlider("Number of Comps", "Change the number of compasses collected", 100, 1, function(c)
+        _G.CompassNumber = c
+    end)
+
+    MerchantsSection:NewButton("Expertise", "Get an expertise quest", function()
+        workspace:WaitForChild("Merchants"):WaitForChild("ExpertiseMerchant"):WaitForChild("Clickable"):WaitForChild("Retum"):FireServer()
+    end)
+
+    MerchantsSection:NewToggle("Auto Rayleigh", "Automatically do Rayleigh and obtain haki", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoRayleigh'))()
+        else
+            _G.AutoRayleigh = false
+        end
+    end)
+
+    -- MISC
+    local Misc = Window:NewTab("Misc")
+    local MiscSection = Misc:NewSection("Misc")
+    local ExternalSection = Misc:NewSection("External Scripts")
+
+    ExternalSection:NewButton("Infinite Yield", "FE Admin Commands", function()
+        loadstring(game:HttpGet(('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'), true))()
+    end)
+
+    ExternalSection:NewButton("Chat Spy", "Lets you spy on others' chats", function()
+        loadstring(game:HttpGet(('https://pastebin.com/raw/qNMunbP8'), true))()
+    end)
+
+    ExternalSection:NewButton("Dark Dex", "Lets you view game explorer", function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua", true))()
+    end)
+
+    ExternalSection:NewButton("Remote Spy", "Lets you see remotes", function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/exxtremestuffs/SimpleSpySource/master/SimpleSpy.lua", true))()
+    end)
+
+    MiscSection:NewButton("Safe Place", "Teleports you to a safe place", function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/confidentialn/tempus/main/Safeplace", true))()
+    end)
+
+    MiscSection:NewSlider("Safe Place Size", "Change the safe place size", 1000, 0, function(a)
+        _G.PlatformSize = a
+    end)
+
+    MiscSection:NewToggle("Hitbox", "Change the hitbox of other players", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/Hitbox'))() 
+        else
+            _G.HitboxSize = 1
+            _G.Hitbox = false
+        end
+    end)
+
+    MiscSection:NewSlider("Hitbox Size", "Change the hitbox size", 1000, 1, function(hit)
+        _G.HitboxSize = hit
+    end)
+
+    MiscSection:NewColorPicker("Hitbox Colour", "Changes the colour of hitboxes", Color3.fromRGB(0, 0, 1), function(hitboxc)
+        _G.HitboxColor = hitboxc
+    end)
+
+    -- SETTINGS
+    local Settings = Window:NewTab("Settings")
+    local SettingsSection = Settings:NewSection("Settings")
+
+    SettingsSection:NewKeybind("Set Keybind", "Sets your keybind (Default: P)", Enum.KeyCode.P, function()
+        Library:ToggleUI()
+    end)
+	
+	SettingsSection:NewToggle("Antimod", "Kicks if a mod joins  the server, on by default", function(state)
+		if state then
+			loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/Antimod'))()
+		else
+			_G.Antimod = false
+		end
+	end)
 end
