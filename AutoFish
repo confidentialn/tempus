@@ -1,4 +1,3 @@
-wait(5)
 local RodsEq = {"Wood Rod", "Sturdy Rod", "Super Rod"}
 local user = tostring(game.Players.LocalPlayer.Name)
 
