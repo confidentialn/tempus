@@ -1,0 +1,15 @@
+        _G.Drinking = true
+while _G.Drinking do
+    wait(5)
+local Players = game:GetService("Players")
+local Lp = Players.LocalPlayer
+local Character = Lp.Character or Lp.CharacterAdded:Wait()
+local Humanoid = Character.Humanoid
+for i,v in pairs(Lp.Backpack:GetChildren()) do 
+    if v:IsA("Tool") and string.find(v.Name, "Juice") or string.find(v.Name, "Milk") or string.find(v.Name, "Cider") or string.find(v.Name, "Lemonade") or string.find(v.Name, "Smoothie") or string.find(v.Name, "Golden") then 
+        Humanoid:EquipTool(v)
+        v:Activate()
+        --wait()
+    end 
+end 
+end
