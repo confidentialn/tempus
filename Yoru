@@ -1,0 +1,21 @@
+_G.Yoru = true
+local Players = game:GetService("Players")
+local Plr = Players.LocalPlayer
+local Character = Plr.Character
+local Yoru = Character:FindFirstChild("Yoru")
+local Environment = getsenv(Yoru.AnimationController)
+
+local Speed = _G.YoruSpeed or 1 -- Change the speed of spamming by adjusting the value of _G.YoruSpeed
+
+while _G.Yoru do
+    pcall(function()
+        for i, v in pairs(getconnections(Yoru.RequestAnimation.OnClientEvent)) do
+            v:Disable()
+        end
+
+        for i = 1, Speed do
+            Yoru.RequestAnimation:FireServer(Environment.PlaceId)
+        end
+    end)
+    wait()
+end
