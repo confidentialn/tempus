@@ -1,0 +1,36 @@
+local Mods = {
+    1135910299, 520944, 43247021, 2350183594
+}
+
+local function CheckMods()
+    for _, v in pairs(game:GetService("Players"):GetPlayers()) do
+        for _, v1 in pairs(Mods) do
+            if v.UserId == v1 then
+                game:GetService("Players").LocalPlayer:Kick("Admin is in the server")
+            end
+        end
+    end
+end
+
+local function CheckPlayerAdded(r)
+    for _, v in pairs(Mods) do
+        if r.UserId == v then
+            game:GetService("Players").LocalPlayer:Kick("Admin has joined the server")
+        end
+    end
+end
+
+_G.Antimod = true
+
+game:GetService("Players").PlayerAdded:Connect(function(player)
+    if _G.Antimod then
+        CheckPlayerAdded(player)
+    end
+end)
+
+while true do
+    if _G.Antimod then
+        CheckMods()
+    end
+    wait(1)
+end
