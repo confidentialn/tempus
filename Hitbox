@@ -1,25 +1,37 @@
--- Check if the required variables are set
-_G.Hitbox = true
-if not _G.HitboxSize or not _G.HitboxColor or not _G.Hitbox then
-    error("Required variables are not set!")
-end
-
--- Get the local player
+-- Variables
 local player = game.Players.LocalPlayer
 
--- Run the hitbox modification continuously
-while _G.Hitbox do
-    -- Store hitbox size and color in local variables
-    local size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
-    local color = BrickColor.new(_G.HitboxColor)
+-- Settings
+_G.Hitbox = false
+_G.HitboxSize = 20
+_G.HitboxColor = BrickColor.new("Really blue")
 
-    -- Loop through all other players
-    for _, otherPlayer in pairs(game.Players:GetPlayers()) do
-        if otherPlayer ~= player and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
-            -- Modify the size and color of the other player's HumanoidRootPart
-            otherPlayer.Character.HumanoidRootPart.Size = size
-            otherPlayer.Character.HumanoidRootPart.BrickColor = color
+-- Script
+_G.Hitbox = true
+
+while _G.Hitbox do
+    for i, v in next, game:GetService('Players'):GetPlayers() do
+        if v.Name ~= player.Name then
+            pcall(function()
+                v.Character.HumanoidRootPart.Size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
+                v.Character.HumanoidRootPart.Transparency = 0.5
+                v.Character.HumanoidRootPart.BrickColor = Color3.fromRGB(_G.HitboxColor)
+                v.Character.HumanoidRootPart.Material = "Neon"
+                v.Character.HumanoidRootPart.CanCollide = false
+            end)
         end
     end
     wait()
+end
+
+for i, v in next, game:GetService('Players'):GetPlayers() do
+    if v.Name ~= player.Name then
+        pcall(function()
+            v.Character.HumanoidRootPart.Size = Vector3.new(1, 2, 1)
+            v.Character.HumanoidRootPart.Transparency = 0
+            v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Bright green")
+            v.Character.HumanoidRootPart.Material = "Plastic"
+            v.Character.HumanoidRootPart.CanCollide = true
+        end)
+    end
 end
