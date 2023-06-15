@@ -4,8 +4,6 @@ local player = game.Players.LocalPlayer
 -- Settings
 _G.Hitbox = false
 _G.HitboxSize = 20
-local HitColor = _G.HitboxColor
-
 
 -- Script
 _G.Hitbox = true
@@ -15,8 +13,8 @@ while _G.Hitbox do
         if v.Name ~= player.Name then
             pcall(function()
                 v.Character.HumanoidRootPart.Size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
-                v.Character.HumanoidRootPart.Transparency = 0.5
-                v.Character.HumanoidRootPart.BrickColor = Color3.fromRGB(HitColor)
+                v.Character.HumanoidRootPart.Transparency = 0.75
+                v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Vermillion")
                 v.Character.HumanoidRootPart.Material = "Neon"
                 v.Character.HumanoidRootPart.CanCollide = false
             end)
@@ -24,4 +22,3 @@ while _G.Hitbox do
     end
     wait()
 end
-
