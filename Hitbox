@@ -9,12 +9,16 @@ local player = game.Players.LocalPlayer
 
 -- Run the hitbox modification continuously
 while _G.Hitbox do
+    -- Store hitbox size and color in local variables
+    local size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
+    local color = BrickColor.new(_G.HitboxColor)
+
     -- Loop through all other players
     for _, otherPlayer in pairs(game.Players:GetPlayers()) do
         if otherPlayer ~= player and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
             -- Modify the size and color of the other player's HumanoidRootPart
-            otherPlayer.Character.HumanoidRootPart.Size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
-            otherPlayer.Character.HumanoidRootPart.BrickColor = BrickColor.new(_G.HitboxColor)
+            otherPlayer.Character.HumanoidRootPart.Size = size
+            otherPlayer.Character.HumanoidRootPart.BrickColor = color
         end
     end
     wait()
