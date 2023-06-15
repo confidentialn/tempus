@@ -1,7 +1,8 @@
--- BASEPLATE GAME SCRIPT
+-- OPL GAME SCRIPT
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 local Window = Library.CreateLib("Tempus Hub", "DarkTheme")
-
+_G.Antimod = true
+_G.Antiafk = true
 if game.PlaceId == 3237168 then
     -- MAIN
     local Main = Window:NewTab("Farms")
@@ -149,6 +150,9 @@ if game.PlaceId == 3237168 then
         _G.HitboxSize = hit
     end)
 	
+	MiscSection:NewColorPicker("Hitbox Colour", "Changes the colour of hitboxes", Color3.fromRGB(0,0,1), function(hitboxc)
+		_G.HitboxColor = hitboxc
+	end)
 
     -- SETTINGS
     local Settings = Window:NewTab("Settings")
@@ -157,4 +161,13 @@ if game.PlaceId == 3237168 then
     SettingsSection:NewKeybind("Set Keybind", "Sets your keybind (Default: P)", Enum.KeyCode.P, function()
         Library:ToggleUI()
     end)
+	
+	SettingsSection:NewToggle("Antimod", "Kicks if a mod joins  the server, on by default", function(state)
+		if state then
+			loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/Antimod'))()
+		else
+			_G.Antimod = false
+		end
+	end)
+
 end
