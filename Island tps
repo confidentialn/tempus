@@ -1,0 +1,90 @@
+if currentOption == "Expertise" then
+game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(902.105103, 282.199921, 1219.1825, 0.000111424371, -4.80737405e-08, 1, -5.58505509e-09, 1, 4.80743623e-08, -1, -5.59041169e-09, 0.000111424371)
+end
+
+if currentOption == "Krizma" then
+game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1074.2793, 360.999908, 1687.67566, 0.998138607, -2.49312624e-08, 0.0609866381, 1.98675316e-08, 1, 8.3636543e-08, -0.0609866381, -8.22692101e-08, 0.998138607)
+   end
+
+if currentOption == "Sand" then
+    for i,v in pairs(game.Workspace.IslandWindmill:GetDescendants()) do
+        if v.Name == "Part" then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+        end
+        end    end  
+
+if currentOption == "Cave" then
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(76.3779144, 299.999908, -916.032043, 0.0174713228, -3.14204591e-08, 0.999847353, 5.21297814e-08, 1, 3.05143395e-08, -0.999847353, 5.15886995e-08, 0.0174713228)
+end
+
+if currentOption == "SandCastle" then
+    for i,v in pairs(game.Workspace.IslandSandCastle:GetDescendants()) do
+        if v.Name == "Part" then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+        end
+        end    end
+  
+if currentOption == "Sam" then
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1298.30603, 217.999954, -1352.47571, 0.017669782, -1.08078257e-08, 0.999843895, -7.31044647e-09, 1, 1.09387068e-08, -0.999843895, -7.50258966e-09, 0.017669782)
+end
+
+if currentOption == "Mansion" then
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1818.72119, 218, 881.086304, 0.707021296, 6.48462928e-09, -0.707192302, -5.54870603e-08, 1, -4.63041019e-08, 0.707192302, 7.19780076e-08, 0.707021296)
+end
+
+if currentOption == "Dead Trees" then
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2053.56348, 491.999908, -603.457642, 0.999845803, -6.42047766e-08, -0.0175616108, 6.59244677e-08, 1, 9.73443264e-08, 0.0175616108, -9.84870496e-08, 0.999845803)
+end
+
+if currentOption == "Moss" then
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2606.74414, 269.599915, 1098.1311, 0.0525588207, -5.60069324e-09, 0.998617828, -1.80996815e-10, 1, 5.61797142e-09, -0.998617828, -4.76020612e-10, 0.0525588207)
+end
+
+if currentOption == "RaceTrack" then
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-6056.94434, 217.643265, 3332.71924, -0.824234724, -3.06996917e-08, -0.566248238, -9.82805215e-09, 1, -3.991018e-08, 0.566248238, -2.73302394e-08, -0.824234724)
+end
+  
+if currentOption == "Little Snow" then
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1897.03699, 224.999954, 3295.97852, 0.422415107, -1.19760401e-07, -0.906402469, 5.81015094e-08, 1, -1.05049857e-07, 0.906402469, -8.28870661e-09, 0.422415107)
+end
+
+if currentOption == "Pyramid" then
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(117.47625, 277.999908, 4948.05713, -0.688197017, 3.47416451e-09, 0.725523829, -6.7682937e-10, 1, -5.43049916e-09, -0.725523829, -4.22830926e-09, -0.688197017)
+end
+
+if currentOption == "BigSnow" then
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(6640.6499, 417.998901, -1478.11169, -0.294113189, 6.32640322e-08, -0.955770612, 2.0722144e-08, 1, 5.98149583e-08, 0.955770612, -2.21324803e-09, -0.294113189)
+end
+
+if currentOption == "MarineFort" then
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-3134.58325, 275.799927, -3652.50513, 0.99999994, -9.04243613e-09, -0.000312123768, 9.0418677e-09, 1, -1.82297777e-09, 0.000312123768, 1.82015547e-09, 0.99999994)
+end
+
+if currentOption == "Purple" then
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-5285.72803, 515.999817, -7745.1543, -0.999651134, 6.1504144e-09, 0.0264117159, 3.64631259e-09, 1, -9.48584287e-08, -0.0264117159, -9.47290317e-08, -0.999651134)
+end
+
+if currentOption == "Disco" then
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1521.71997, 260.38623, 2187.73511, 1, 8.61509197e-11, 7.85281545e-16, -8.61509197e-11, 1, -9.82245325e-08, -7.93743669e-16, 9.82245325e-08, 1)
+end
+
+if currentOption == "Tall Trees" then
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-6032.78955, 401.999908, 4.39634514, -0.999964476, 1.89321381e-09, -0.00843126699, 1.84625704e-09, 1, 5.57713209e-09, 0.00843126699, 5.56136781e-09, -0.999964476)
+end
+
+if currentOption == "Vokkun" then
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4572.5, 217.399857, 5094.63428, -0.999854326, 3.65839306e-08, -0.0170693286, 3.71540878e-08, 1, -3.30852146e-08, 0.0170693286, -3.37145885e-08, -0.999854326)
+end
+
+if currentOption == "Pursuer" then
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4846.59082, 569.999817, -7142.89258, 0.996175706, -2.08068229e-09, -0.087372601, 9.85005189e-10, 1, -1.25833957e-08, 0.087372601, 1.24492106e-08, 0.996175706)
+end
+
+if currentOption == "Kaizu" then
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1589.06714, 215.999954, 9941.59766, -0.0209177006, -8.02182285e-08, -0.999781191, 4.7343427e-08, 1, -8.1226311e-08, 0.999781191, -4.90321348e-08, -0.0209177006)
+end
+
+if currentOption == "Kaizu" then
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1589.06714, 215.999954, 9941.59766, -0.0209177006, -8.02182285e-08, -0.999781191, 4.7343427e-08, 1, -8.1226311e-08, 0.999781191, -4.90321348e-08, -0.0209177006)
+end
+end)
