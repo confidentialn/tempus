@@ -4,6 +4,8 @@ local user = tostring(game.Players.LocalPlayer.Name)
 _G.AutoFish = true
 
 while _G.AutoFish do
+    wait(5) -- Delay of 5 seconds before each iteration
+
     -- Find the first rod in the inventory that matches the names in RodsEq
     for _, tool in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
         if tool:IsA("Tool") and table.find(RodsEq, tool.Name) then
@@ -58,7 +60,7 @@ while _G.AutoFish do
         character.HumanoidRootPart.CFrame = CFrame.new(platformPosition + Vector3.new(0, platformSize.Y / 2 + character.Humanoid.HipHeight, 0))
     end
 
-    wait(1)
+    wait(0.5)
 
     local character = game.Players.LocalPlayer.Character
     local rod = character:FindFirstChild(RodsEq)
@@ -71,11 +73,9 @@ while _G.AutoFish do
         rod.Click:FireServer(unpack(args))
 
         repeat
-            wait(0.1) -- Adjust the delay here (smaller value to fish faster, larger value to fish slower)
+            wait(0.05) -- Adjust the delay here (smaller value to fish faster, larger value to fish slower)
         until game.Workspace[user][RodsEq].Cast.Bobber.Effect.Enabled == true
 
         rod.Click:FireServer(unpack(args)) -- Additional rod click after the bobber effect is enabled
     end
-
-    wait(5) -- Delay after each fishing attempt (adjust as needed)
 end
