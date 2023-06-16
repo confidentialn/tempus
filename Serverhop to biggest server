@@ -3,42 +3,54 @@ local AllIDs = {}
 local foundAnything = ""
 local actualHour = os.date("!*t").hour
 local Deleted = false
-local File = pcall(function()
-    AllIDs = game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
-end)
-if not File then
+
+local function updateAllIDs()
     table.insert(AllIDs, actualHour)
     writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
 end
 
-local function TPReturner()
+local File = pcall(function()
+    AllIDs = game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+end)
+
+if not File then
+    updateAllIDs()
+end
+
+function TPReturner()
     local Site
+    local maxPlayers = 0  -- Variable to track the maximum number of players
+    local targetServerId = nil  -- Variable to store the ID of the target server
+    
     if foundAnything == "" then
-        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Desc&limit=100'))
+        Site = game:GetService('HttpService'):JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
     else
-        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Desc&limit=100&cursor=' .. foundAnything))
+        Site = game:GetService('HttpService'):JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
     end
-
-    local largestServer = nil
-    local largestPlayerCount = -1
-
+    
     if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
         foundAnything = Site.nextPageCursor
     end
 
     for i, v in pairs(Site.data) do
-        if tonumber(v.playing) > largestPlayerCount and tonumber(v.maxPlayers) > tonumber(v.playing) then
-            largestPlayerCount = tonumber(v.playing)
-            largestServer = v.id
+        local serverPlayers = tonumber(v.playing)
+        if tonumber(v.maxPlayers) > serverPlayers then
+            if serverPlayers > maxPlayers then
+                maxPlayers = serverPlayers
+                targetServerId = v.id
+            end
         end
     end
 
-    if largestServer then
-        table.insert(AllIDs, largestServer)
+    if targetServerId then
+        table.insert(AllIDs, targetServerId)
+        wait()
         pcall(function()
             writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
-            game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, largestServer, game.Players.LocalPlayer)
+            wait()
+            game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, targetServerId, game.Players.LocalPlayer)
         end)
+        wait(4)
     end
 end
 
