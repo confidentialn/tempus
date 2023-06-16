@@ -35,7 +35,7 @@ while _G.NpcFarming do
 
     -- Fire the UpdateHaki remote
     workspace.UserData["User_"..game.Players.LocalPlayer.UserId].UpdateHaki:FireServer()
-    
+
     -- Fire the Retum remote
     workspace.Merchants.ExpertiseMerchant.Clickable.Retum:FireServer()
 
@@ -67,7 +67,9 @@ while _G.NpcFarming do
     -- Position and handle the enemies
     local distance = 10 -- Adjust the distance value as per your preference
 
-    while _G.NpcFarming do
+    local platformTimer = 0 -- Initialize the platform timer
+
+    while _G.NpcFarming and platformTimer < 0.1 do
         local localPlayer = game.Players.LocalPlayer
         if localPlayer.Character then
             local character = localPlayer.Character
@@ -116,8 +118,12 @@ while _G.NpcFarming do
             end
         end
 
-        wait(0.1) -- Wait for 0.1 seconds before the next iteration
+        wait(0.01) -- Wait for 0.01 seconds before the next iteration
+        platformTimer = platformTimer + 0.01 -- Increment the platform timer
     end
 
-    wait(1) -- Wait for 1 second before generating the next platform
+    -- Reset the platform timer
+    platformTimer = 0
+
+    wait(0.09) -- Wait for the remaining time (0.1 - 0.01) before generating the next platform
 end
