@@ -1,0 +1,78 @@
+local PlaceID = game.PlaceId
+local AllIDs = {}
+local foundAnything = ""
+local actualHour = os.date("!*t").hour
+local Deleted = false
+
+local File = pcall(function()
+    AllIDs = game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+end)
+
+if not File then
+    table.insert(AllIDs, actualHour)
+    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+end
+
+function TPReturner()
+    local Site
+    if foundAnything == "" then
+        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+    else
+        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+    end
+    
+    local totalPlayers = 0
+    local serverCount = 0
+    
+    -- Calculate the average player count
+    for _, serverData in ipairs(Site.data) do
+        totalPlayers = totalPlayers + serverData.playing
+        serverCount = serverCount + 1
+    end
+    
+    local averagePlayers = totalPlayers / serverCount
+    
+    local ID = ""
+    if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+        foundAnything = Site.nextPageCursor
+    end
+    
+    for _, serverData in ipairs(Site.data) do
+        local Possible = true
+        ID = tostring(serverData.id)
+        
+        if tonumber(serverData.maxPlayers) > tonumber(serverData.playing) and tonumber(serverData.playing) >= averagePlayers / 2 then
+            for _, Existing in pairs(AllIDs) do
+                if ID == tostring(Existing) then
+                    Possible = false
+                    break
+                end
+            end
+            
+            if Possible == true then
+                table.insert(AllIDs, ID)
+                wait()
+                pcall(function()
+                    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                    wait()
+                    game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                end)
+                wait(4)
+            end
+        end
+    end
+end
+
+function Teleport()
+    while wait() do
+        pcall(function()
+            TPReturner()
+            if foundAnything ~= "" then
+                TPReturner()
+            end
+        end)
+    end
+end
+
+-- If you'd like to use a script before server hopping (Like an automatic chest collector), you can put the Teleport() after it has collected everything.
+Teleport()
