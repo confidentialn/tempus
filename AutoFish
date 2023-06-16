@@ -4,7 +4,7 @@ local user = tostring(game.Players.LocalPlayer.Name)
 _G.AutoFish = true
 
 while _G.AutoFish do
-    wait(5) -- Delay of 5 seconds before each iteration
+    wait(5) -- Delay before each iteration (adjust as needed)
 
     -- Find the first rod in the inventory that matches the names in RodsEq
     for _, tool in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
@@ -16,7 +16,7 @@ while _G.AutoFish do
 
     if not RodsEq then
         warn("No suitable rod found in inventory.")
-        break
+        return
     end
 
     for i, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
@@ -30,7 +30,7 @@ while _G.AutoFish do
         rod.Parent = game.Players.LocalPlayer.Character
     end
 
-    local platformSize = Vector3.new(100, 1, 100)
+    local platformSize = Vector3.new(10, 1, 10)
 
     -- Create the initial platform
     local platformPosition = Vector3.new(math.random(-10000, 10000), 210, -20000)
@@ -60,22 +60,26 @@ while _G.AutoFish do
         character.HumanoidRootPart.CFrame = CFrame.new(platformPosition + Vector3.new(0, platformSize.Y / 2 + character.Humanoid.HipHeight, 0))
     end
 
-    wait(0.5)
+    wait(1)
 
-    local character = game.Players.LocalPlayer.Character
-    local rod = character:FindFirstChild(RodsEq)
+    while _G.AutoFish do
+        local character = game.Players.LocalPlayer.Character
+        local rod = character:FindFirstChild(RodsEq)
 
-    if rod then
-        local args = {
-            [1] = character.HumanoidRootPart.CFrame.Position
-        }
+        if rod then
+            local args = {
+                [1] = character.HumanoidRootPart.CFrame.Position
+            }
 
-        rod.Click:FireServer(unpack(args))
+            rod.Click:FireServer(unpack(args))
 
-        repeat
-            wait(1) -- Adjust the delay here (smaller value to fish faster, larger value to fish slower)
-        until game.Workspace[user][RodsEq].Cast.Bobber.Effect.Enabled == true
+            repeat
+                wait(0.1) -- Adjust the delay here (smaller value to fish faster, larger value to fish slower)
+            until game.Workspace[user][RodsEq].Cast.Bobber.Effect.Enabled == true
 
-        rod.Click:FireServer(unpack(args)) -- Additional rod click after the bobber effect is enabled
+            rod.Click:FireServer(unpack(args)) -- Additional rod click after the bobber effect is enabled
+        end
+
+        wait(1) -- Delay after each fishing attempt (adjust as needed)
     end
 end
