@@ -45,7 +45,15 @@ if game.PlaceId == 3237168 then
         end
     end)
 
+    MainSection:NewToggle("Autodrink", "Automatically drinks all drinks", function(state)
+        if state then
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoDrink'))()
+        else
+            _G.Drinking = false
+        end
+    end)
 
+	
     -- LOCAL PLAYER
     local Player = Window:NewTab("Player")
     local PlayerSection = Player:NewSection("Player")
@@ -85,7 +93,7 @@ if game.PlaceId == 3237168 then
         end
     end)
 
-    PlayerSection:NewSlider("YoruSpeed", "Change the yoru speed", 2500, 1, function(yspeed)
+    PlayerSection:NewSlider("YoruSpeed", "Change the yoru speed", 150, 1, function(yspeed)
         _G.YoruSpeed = yspeed
     end)
 	
@@ -212,7 +220,18 @@ if game.PlaceId == 3237168 then
         end
     end)
 
-    -- MISC
+	MerchantsSection:NewDropdown("The Drink", "Buys chosen drinks", {"Cider+", "Lemonade+", "Juice+", "Smoothie+"}, function(An)
+	Choice = An
+	end)
+
+	MerchantsSection:NewTextBox("Drink Amount", "Makes you buy drinks", function(text)
+	for i = 1,(text) do
+		wait(0.1)
+		game.Workspace.Merchants.BetterDrinkMerchant.Clickable.Retum:FireServer(Choice)
+		end
+	end)
+	
+ -- MISC
     local Misc = Window:NewTab("Misc")
     local MiscSection = Misc:NewSection("Misc")
     local ExternalSection = Misc:NewSection("External Scripts")
@@ -237,7 +256,7 @@ if game.PlaceId == 3237168 then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/confidentialn/tempus/main/Safeplace", true))()
     end)
 
-    MiscSection:NewSlider("Safe Place Size", "Change the safe place size", 1000, 0, function(a)
+    MiscSection:NewSlider("Safe Place Size", "Change the safe place size", 1000, 1, function(a)
         _G.PlatformSize = a
     end)
 
@@ -250,14 +269,18 @@ if game.PlaceId == 3237168 then
         end
     end)
 
-    MiscSection:NewSlider("Hitbox Size", "Change the hitbox size", 1000, 1, function(hit)
-        _G.HitboxSize = hit
+    MiscSection:NewSlider("Hitbox Size", "Change the hitbox size", 1000, 1, function(x)
+        _G.HitboxSize = x
     end)
 
-    MiscSection:NewColorPicker("Hitbox Colour", "Changes the colour of hitboxes", Color3.fromRGB(0, 0, 1), function(hitboxc)
-        _G.HitboxColor = hitboxc
+	MiscSection:NewButton("Rejoin Server", "Makes you rejoin the same server", function()
+        game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
     end)
-
+	
+	MiscSection:NewButton("Serverhop to smallest", "Makes you join the smallest server", function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/Serverhop%20to%20smallest%20server'))()
+    end)
+	
     -- SETTINGS
     local Settings = Window:NewTab("Settings")
     local SettingsSection = Settings:NewSection("Settings")
