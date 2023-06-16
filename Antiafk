@@ -1,0 +1,15 @@
+_G.AntiAFK = true
+local vu = game:GetService("VirtualUser")
+local player = game:GetService("Players").LocalPlayer
+
+local function AntiAFK()
+    vu:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+    wait(1)
+    vu:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+end
+
+player.Idled:Connect(function()
+    if _G.AntiAFK then
+        AntiAFK()
+    end
+end)
