@@ -7,28 +7,26 @@ while _G.AutoFish do
     wait(5) -- Delay before each iteration (adjust as needed)
 
     -- Find the first rod in the inventory that matches the names in RodsEq
+    local foundRod = nil
     for _, tool in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
         if tool:IsA("Tool") and table.find(RodsEq, tool.Name) then
-            RodsEq = tool.Name
+            foundRod = tool
             break
         end
     end
 
-    if not RodsEq then
+    if not foundRod then
         warn("No suitable rod found in inventory.")
-        return
+        break -- Exit the current loop iteration and continue to the next iteration
     end
 
     for i, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
-        if v:IsA("Tool") and v.Name ~= RodsEq then
+        if v:IsA("Tool") and v.Name ~= foundRod.Name then
             v.Parent = game.Players.LocalPlayer.Backpack
         end
     end
 
-    local rod = game.Players.LocalPlayer.Backpack:FindFirstChild(RodsEq)
-    if rod then
-        rod.Parent = game.Players.LocalPlayer.Character
-    end
+    foundRod.Parent = game.Players.LocalPlayer.Character
 
     local platformSize = Vector3.new(10, 1, 10)
 
@@ -64,7 +62,7 @@ while _G.AutoFish do
 
     while _G.AutoFish do
         local character = game.Players.LocalPlayer.Character
-        local rod = character:FindFirstChild(RodsEq)
+        local rod = character:FindFirstChild(foundRod.Name)
 
         if rod then
             local args = {
@@ -75,7 +73,7 @@ while _G.AutoFish do
 
             repeat
                 wait(0.1) -- Adjust the delay here (smaller value to fish faster, larger value to fish slower)
-            until game.Workspace[user][RodsEq].Cast.Bobber.Effect.Enabled == true
+            until game.Workspace[user][foundRod.Name].Cast.Bobber.Effect.Enabled == true
 
             rod.Click:FireServer(unpack(args)) -- Additional rod click after the bobber effect is enabled
         end
