@@ -1,1 +1,25 @@
+local StarterGui = game:GetService("StarterGui")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 
+local TutorialButton = StarterGui.Load.Frame.Tutorial
+
+local prevTutorialVisibility = not TutorialButton.Visible
+_G.AutoSpawn = true -- Set this to true to enable the script
+
+while _G.AutoSpawn do
+    if LocalPlayer and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("CamScript") then
+        local tutorialVisible = TutorialButton.Visible
+        if tutorialVisible and not prevTutorialVisibility then
+            local camScript = LocalPlayer.Character.CamScript
+            local args = {} -- Fill in the appropriate arguments here
+
+            -- Call the FireServer method with the specified arguments
+            camScript.ClientServerClient:FireServer(unpack(args))
+        end
+
+        prevTutorialVisibility = not tutorialVisible
+    end
+
+    wait()
+end
