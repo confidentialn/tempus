@@ -35,7 +35,7 @@ while _G.NpcFarming do
 
     -- Fire the UpdateHaki remote
     workspace.UserData["User_"..game.Players.LocalPlayer.UserId].UpdateHaki:FireServer()
-
+    
     -- Fire the Retum remote
     workspace.Merchants.ExpertiseMerchant.Clickable.Retum:FireServer()
 
@@ -46,12 +46,19 @@ while _G.NpcFarming do
         character.HumanoidRootPart.CFrame = CFrame.new(platformPosition + Vector3.new(0, platformSize.Y / 2 + 2, 0))
     end
 
-    -- Make the enemies invisible
+    -- Make the enemies invisible and remove decals and effects
     for _, enemy in ipairs(workspace.Enemies:GetChildren()) do
         if enemy:IsA("Model") then
             for _, part in ipairs(enemy:GetDescendants()) do
                 if part:IsA("BasePart") then
-                    part.Transparency = 1
+                    -- Remove decals
+                    part:ClearAllChildren()
+
+                    -- Remove effects
+                    local effects = part:FindFirstChild("Effects")
+                    if effects then
+                        effects:Destroy()
+                    end
                 end
             end
         end
@@ -70,25 +77,31 @@ while _G.NpcFarming do
             if playerRootPart and playerRootPart:IsA("BasePart") then
                 for _, enemy in ipairs(workspace.Enemies:GetChildren()) do
                     if enemy:IsA("Model") then
-                        local head = enemy:FindFirstChild("Head")
-                        if head and head:IsA("BasePart") then
-                            -- Position the enemy head in front of the player's HumanoidRootPart
-                            local direction = playerRootPart.CFrame.lookVector
-                            local offset = direction * distance
-                            head.CFrame = playerRootPart.CFrame + offset
+                        local humanoid = enemy:FindFirstChildOfClass("Humanoid")
+                        if humanoid and humanoid.Health > 0 then
+                            local head = enemy:FindFirstChild("Head")
+                            if head and head:IsA("BasePart") then
+                                -- Position the enemy head in front of the player's HumanoidRootPart
+                                local direction = playerRootPart.CFrame.lookVector
+                                local offset = direction * distance
+                                head.CFrame = playerRootPart.CFrame + offset
 
-                            -- Set hitbox size to 25 in all aspects
-                            local size = Vector3.new(25, 25, 25)
+                                -- Set hitbox size to 25 in all aspects
+                                local size = Vector3.new(25, 25, 25)
 
-                            -- Disable collision for the hitbox
-                            head.CanCollide = false
+                                -- Disable collision for the hitbox
+                                head.CanCollide = false
 
-                            -- Apply the modifications to the hitbox
-                            head.Size = size
-                            head.Transparency = 1
+                                -- Apply the modifications to the hitbox
+                                head.Size = size
+                                head.Transparency = 1
 
-                            -- Freeze the enemy in place
-                            head.Anchored = true
+                                -- Freeze the enemy in place
+                                head.Anchored = true
+                            end
+                        else
+                            -- Delete the enemy's parts if it is dead
+                            enemy:Destroy()
                         end
                     end
                 end
