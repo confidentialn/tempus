@@ -69,6 +69,7 @@ while _G.toggleFish do
         }
 
         rod.Click:FireServer(unpack(args))
+        wait(0.2) -- Delay to allow the game to update the bobber effect state
 
         repeat
             wait(0.1) -- Adjust the delay here (smaller value to fish faster, larger value to fish slower)
