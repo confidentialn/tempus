@@ -73,7 +73,7 @@ while _G.AutoFish do
 
             repeat
                 wait(0.1) -- Adjust the delay here (smaller value to fish faster, larger value to fish slower)
-            until game.Workspace[user][foundRod.Name].Cast.Bobber.Effect.Enabled == true
+            until game.Workspace:WaitForChild(user):WaitForChild(foundRod.Name):WaitForChild("Cast"):WaitForChild("Bobber").Effect.Enabled == true
 
             rod.Click:FireServer(unpack(args)) -- Additional rod click after the bobber effect is enabled
         end
