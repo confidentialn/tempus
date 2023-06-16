@@ -1,65 +1,65 @@
 local RodsEq = {"Wood Rod", "Sturdy Rod", "Super Rod"}
 local user = tostring(game.Players.LocalPlayer.Name)
 
--- Find the first rod in the inventory that matches the names in RodsEq
-for _, tool in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-    if tool:IsA("Tool") and table.find(RodsEq, tool.Name) then
-        RodsEq = tool.Name
+_G.AutoFish = true
+
+while _G.AutoFish do
+    -- Find the first rod in the inventory that matches the names in RodsEq
+    for _, tool in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+        if tool:IsA("Tool") and table.find(RodsEq, tool.Name) then
+            RodsEq = tool.Name
+            break
+        end
+    end
+
+    if not RodsEq then
+        warn("No suitable rod found in inventory.")
         break
     end
-end
 
-if not RodsEq then
-    warn("No suitable rod found in inventory.")
-    return
-end
-
-for i, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
-    if v:IsA("Tool") and v.Name ~= RodsEq then
-        v.Parent = game.Players.LocalPlayer.Backpack
+    for i, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+        if v:IsA("Tool") and v.Name ~= RodsEq then
+            v.Parent = game.Players.LocalPlayer.Backpack
+        end
     end
-end
 
-local rod = game.Players.LocalPlayer.Backpack:FindFirstChild(RodsEq)
-if rod then
-    rod.Parent = game.Players.LocalPlayer.Character
-end
+    local rod = game.Players.LocalPlayer.Backpack:FindFirstChild(RodsEq)
+    if rod then
+        rod.Parent = game.Players.LocalPlayer.Character
+    end
 
-local platformSize = Vector3.new(10, 1, 10)
+    local platformSize = Vector3.new(10, 1, 10)
 
--- Create the initial platform
-local platformPosition = Vector3.new(math.random(-10000, 10000), 210, -20000)
+    -- Create the initial platform
+    local platformPosition = Vector3.new(math.random(-10000, 10000), 210, -20000)
 
--- Destroy the previous platform if it exists
-local previousPlatform = workspace:FindFirstChild("Platform")
-if previousPlatform then
-    previousPlatform:Destroy()
-end
+    -- Destroy the previous platform if it exists
+    local previousPlatform = workspace:FindFirstChild("Platform")
+    if previousPlatform then
+        previousPlatform:Destroy()
+    end
 
--- Create the platform
-local part = Instance.new("Part")
-part.Name = "Platform"
-part.Position = platformPosition
-part.Size = platformSize
-part.BrickColor = BrickColor.new("Medium stone grey")
-part.Transparency = 0.3
-part.Material = Enum.Material.Granite
-part.Anchored = true
-part.CanCollide = true
-part.Parent = workspace
+    -- Create the platform
+    local part = Instance.new("Part")
+    part.Name = "Platform"
+    part.Position = platformPosition
+    part.Size = platformSize
+    part.BrickColor = BrickColor.new("Medium stone grey")
+    part.Transparency = 0.3
+    part.Material = Enum.Material.Granite
+    part.Anchored = true
+    part.CanCollide = true
+    part.Parent = workspace
 
--- Teleport the player on top of the platform
-local localPlayer = game.Players.LocalPlayer
-local character = localPlayer.Character
-if character and character:FindFirstChild("HumanoidRootPart") then
-    character.HumanoidRootPart.CFrame = CFrame.new(platformPosition + Vector3.new(0, platformSize.Y / 2 + character.Humanoid.HipHeight, 0))
-end
+    -- Teleport the player on top of the platform
+    local localPlayer = game.Players.LocalPlayer
+    local character = localPlayer.Character
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        character.HumanoidRootPart.CFrame = CFrame.new(platformPosition + Vector3.new(0, platformSize.Y / 2 + character.Humanoid.HipHeight, 0))
+    end
 
-wait(1)
+    wait(1)
 
-_G.toggleFish = true
-
-while _G.toggleFish do
     local character = game.Players.LocalPlayer.Character
     local rod = character:FindFirstChild(RodsEq)
 
@@ -69,7 +69,6 @@ while _G.toggleFish do
         }
 
         rod.Click:FireServer(unpack(args))
-        wait(0.2) -- Delay to allow the game to update the bobber effect state
 
         repeat
             wait(0.1) -- Adjust the delay here (smaller value to fish faster, larger value to fish slower)
