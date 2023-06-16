@@ -77,5 +77,5 @@ while _G.AutoFish do
         rod.Click:FireServer(unpack(args)) -- Additional rod click after the bobber effect is enabled
     end
 
-    wait(1) -- Delay after each fishing attempt (adjust as needed)
+    wait(5) -- Delay after each fishing attempt (adjust as needed)
 end
