@@ -27,41 +27,39 @@ end
 
 local platformSize = Vector3.new(10, 1, 10)
 
--- Function to create the platform
-local function createPlatform()
-    local platformPosition = Vector3.new(math.random(-10000, 10000), 210, -20000)
+-- Create the initial platform
+local platformPosition = Vector3.new(math.random(-10000, 10000), 210, -20000)
 
-    -- Destroy the previous platform if it exists
-    local previousPlatform = workspace:FindFirstChild("Platform")
-    if previousPlatform then
-        previousPlatform:Destroy()
-    end
-
-    -- Create the platform
-    local part = Instance.new("Part")
-    part.Name = "Platform"
-    part.Position = platformPosition
-    part.Size = platformSize
-    part.BrickColor = BrickColor.new("Medium stone grey")
-    part.Transparency = 0.3
-    part.Material = Enum.Material.Granite
-    part.Anchored = true
-    part.CanCollide = true
-    part.Parent = workspace
-
-    -- Teleport the player on top of the platform
-    local localPlayer = game.Players.LocalPlayer
-    local character = localPlayer.Character
-    if character and character:FindFirstChild("HumanoidRootPart") then
-        character.HumanoidRootPart.CFrame = CFrame.new(platformPosition + Vector3.new(0, platformSize.Y / 2 + character.Humanoid.HipHeight, 0))
-    end
+-- Destroy the previous platform if it exists
+local previousPlatform = workspace:FindFirstChild("Platform")
+if previousPlatform then
+    previousPlatform:Destroy()
 end
 
-createPlatform() -- Create the initial platform
+-- Create the platform
+local part = Instance.new("Part")
+part.Name = "Platform"
+part.Position = platformPosition
+part.Size = platformSize
+part.BrickColor = BrickColor.new("Medium stone grey")
+part.Transparency = 0.3
+part.Material = Enum.Material.Granite
+part.Anchored = true
+part.CanCollide = true
+part.Parent = workspace
+
+-- Teleport the player on top of the platform
+local localPlayer = game.Players.LocalPlayer
+local character = localPlayer.Character
+if character and character:FindFirstChild("HumanoidRootPart") then
+    character.HumanoidRootPart.CFrame = CFrame.new(platformPosition + Vector3.new(0, platformSize.Y / 2 + character.Humanoid.HipHeight, 0))
+end
 
 wait(1)
 
-function AutoFish()
+_G.toggleFish = true
+
+while _G.toggleFish do
     local character = game.Players.LocalPlayer.Character
     local rod = character:FindFirstChild(RodsEq)
 
@@ -78,13 +76,6 @@ function AutoFish()
 
         rod.Click:FireServer(unpack(args)) -- Additional rod click after the bobber effect is enabled
     end
-end
 
-_G.toggleFish = true
-
-while _G.toggleFish do
-    if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").Name == RodsEq then
-        AutoFish()
-        wait(1) -- Delay after each fishing attempt (adjust as needed)
-    end
+    wait(1) -- Delay after each fishing attempt (adjust as needed)
 end
