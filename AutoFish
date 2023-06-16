@@ -30,7 +30,7 @@ while _G.AutoFish do
         rod.Parent = game.Players.LocalPlayer.Character
     end
 
-    local platformSize = Vector3.new(10, 1, 10)
+    local platformSize = Vector3.new(100, 1, 100)
 
     -- Create the initial platform
     local platformPosition = Vector3.new(math.random(-10000, 10000), 210, -20000)
@@ -73,7 +73,7 @@ while _G.AutoFish do
         rod.Click:FireServer(unpack(args))
 
         repeat
-            wait(0.05) -- Adjust the delay here (smaller value to fish faster, larger value to fish slower)
+            wait(1) -- Adjust the delay here (smaller value to fish faster, larger value to fish slower)
         until game.Workspace[user][RodsEq].Cast.Bobber.Effect.Enabled == true
 
         rod.Click:FireServer(unpack(args)) -- Additional rod click after the bobber effect is enabled
