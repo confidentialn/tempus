@@ -25,7 +25,7 @@ if game.PlaceId == 3237168 then
         if state then
             loadstring(game:HttpGet('https://raw.githubusercontent.com/confidentialn/tempus/main/AutoFish'))()
         else
-            _G.ToggleFish = false
+            _G.AutoFish = false
         end
     end)
 
