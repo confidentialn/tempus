@@ -17,7 +17,7 @@ while _G.AutoFish do
 
     if not foundRod then
         warn("No suitable rod found in inventory.")
-        break -- Exit the current loop iteration and continue to the next iteration
+        break -- Exit the loop and stop fishing
     end
 
     for i, v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
