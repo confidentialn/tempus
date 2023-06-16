@@ -126,4 +126,4 @@ while _G.NpcFarming do
     platformTimer = 0
 
     wait(0.09) -- Wait for the remaining time (0.1 - 0.01) before generating the next platform
-end
+end 
