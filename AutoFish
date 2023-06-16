@@ -60,24 +60,20 @@ while _G.AutoFish do
 
     wait(1)
 
+    local Rods = foundRod.Name
+
+    function AutoFish()
+        local args = {[1] = character.HumanoidRootPart.CFrame.Position}
+        character:FindFirstChild(Rods).Click:FireServer(unpack(args))
+        wait(2)
+        repeat
+            wait()
+        until game.Workspace[user][Rods].Cast.Bobber.Effect.Enabled == true
+        character:FindFirstChild(Rods).Click:FireServer(unpack(args))
+    end
+
     while _G.AutoFish do
-        local character = game.Players.LocalPlayer.Character
-        local rod = character:FindFirstChild(foundRod.Name)
-
-        if rod then
-            local args = {
-                [1] = character.HumanoidRootPart.CFrame.Position
-            }
-
-            rod.Click:FireServer(unpack(args))
-
-            repeat
-                wait(0.1) -- Adjust the delay here (smaller value to fish faster, larger value to fish slower)
-            until game.Workspace:WaitForChild(user):WaitForChild(foundRod.Name):WaitForChild("Cast"):WaitForChild("Bobber").Effect.Enabled == true
-
-            rod.Click:FireServer(unpack(args)) -- Additional rod click after the bobber effect is enabled
-        end
-
         wait(1) -- Delay after each fishing attempt (adjust as needed)
+        AutoFish()
     end
 end
