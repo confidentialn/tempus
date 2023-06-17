@@ -4,5 +4,5 @@ _G.ClaimRewards = true
 while _G.ClaimRewards do
     workspace.UserData["User_" .. userId].ClaimRewardHourly:FireServer("RewardMark")
     workspace.UserData["User_" .. userId].ClaimRewardDaily:FireServer("RewardMark")
-    wait() -- Wait for 1 hour before claiming rewards again
+    wait(0.1) -- Wait for 1 hour before claiming rewards again
 end
