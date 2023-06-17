@@ -10,6 +10,13 @@ while _G.AutoCompass do
         end
     end
 
+    -- Find compasses held by the player
+    local heldCompass = game.Players.LocalPlayer.Character:FindFirstChild("Compass")
+
+    if heldCompass then
+        table.insert(compasses, heldCompass)
+    end
+
     -- Equip and activate compasses
     for _, compass in ipairs(compasses) do
         local poserValue = compass:FindFirstChild("Poser") and compass.Poser.Value
@@ -27,7 +34,6 @@ while _G.AutoCompass do
 
     -- Gain more compasses
     workspace.Merchants.QuestMerchant.Clickable.Retum:FireServer("Claim1")
-
 
     wait(0.1) -- Wait for a short duration before the next iteration
 end
