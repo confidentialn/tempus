@@ -19,7 +19,7 @@ while _G.NpcFarming do
 
     -- Define the position and size of the platform
     local platformPosition = Vector3.new(randomX, randomY, randomZ)
-    local platformSize = Vector3.new(_G.PlatformSize, 1, _G.PlatformSize) -- Adjust the size as desired
+    local platformSize = Vector3.new(_G.PlatformSize, 50, _G.PlatformSize) -- Adjust the size as desired
 
     -- Create the platform
     local part = Instance.new("Part")
