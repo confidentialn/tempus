@@ -13,12 +13,12 @@ while _G.Hitbox do
         if v.Name ~= player.Name then
             pcall(function()
                 v.Character.HumanoidRootPart.Size = Vector3.new(_G.HitboxSize, _G.HitboxSize, _G.HitboxSize)
-                v.Character.HumanoidRootPart.Transparency = 0.75
+                v.Character.HumanoidRootPart.Transparency = 0.9
                 v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Vermillion")
                 v.Character.HumanoidRootPart.Material = "Neon"
                 v.Character.HumanoidRootPart.CanCollide = false
             end)
         end
     end
-    wait()
+    wait(0.5)
 end
