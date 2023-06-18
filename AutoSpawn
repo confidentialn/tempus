@@ -1,3 +1,4 @@
+_G.AutoSpawn = true
 local StarterGui = game:GetService("StarterGui")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
@@ -21,5 +22,5 @@ while _G.AutoSpawn do
         prevTutorialVisibility = not tutorialVisible
     end
 
-    wait()
+    wait(1)
 end
