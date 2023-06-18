@@ -1,0 +1,139 @@
+_G.PlayerFarming = true
+
+while _G.PlayerFarming do
+    -- Delete the previous platform if it exists
+    local previousPlatform = workspace:FindFirstChild("Platform")
+    if previousPlatform then
+        previousPlatform:Destroy()
+    end
+
+    -- Generate random X, Y, and Z coordinates
+    local minX = -100000 -- Adjust the minimum and maximum X and Z coordinates as desired
+    local maxX = 100000
+    local minY = 50000
+    local maxY = 75000 -- Adjust the maximum Y coordinate as desired
+
+    local randomX = math.random(minX, maxX)
+    local randomY = math.random(minY, maxY)
+    local randomZ = math.random(minX, maxX)
+
+    -- Define the position and size of the platform
+    local platformPosition = Vector3.new(randomX, randomY, randomZ)
+    local platformSize = Vector3.new(_G.PlatformSize, 50, _G.PlatformSize) -- Adjust the size as desired
+
+    -- Create the platform
+    local part = Instance.new("Part")
+    part.Name = "Platform"
+    part.Position = platformPosition
+    part.Size = platformSize
+    part.BrickColor = BrickColor.new("Medium stone grey") -- Adjust the color as desired
+    part.Transparency = 0.3 -- Adjust the transparency as desired
+    part.Material = Enum.Material.Granite -- Adjust the material as desired
+    part.Anchored = true
+    part.CanCollide = true
+    part.Parent = workspace
+
+    -- Fire the UpdateHaki remote
+    workspace.UserData["User_"..game.Players.LocalPlayer.UserId].UpdateHaki:FireServer()
+
+    -- Fire the Retum remote
+    workspace.Merchants.ExpertiseMerchant.Clickable.Retum:FireServer()
+
+    -- Teleport the player to the platform
+    local localPlayer = game.Players.LocalPlayer
+    local character = localPlayer.Character
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        character.HumanoidRootPart.CFrame = CFrame.new(platformPosition + Vector3.new(0, platformSize.Y / 2 + 2, 0))
+    end
+
+    -- Make the hitbox (HumanoidRootPart) invisible and remove decals and effects
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        if player ~= localPlayer and not (string.find(string.lower(player.DisplayName), "tempus") or string.find(string.lower(player.DisplayName), "cap")) then
+            if not player:IsFriendsWith(localPlayer.UserId) then
+                local character = player.Character
+                if character then
+                    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+                    if humanoidRootPart and humanoidRootPart:IsA("BasePart") then
+                        -- Set hitbox (HumanoidRootPart) transparency to 1 (invisible)
+                        humanoidRootPart.Transparency = 1
+
+                        -- Remove decals
+                        humanoidRootPart:ClearAllChildren()
+
+                        -- Remove effects
+                        local effects = humanoidRootPart:FindFirstChild("Effects")
+                        if effects then
+                            effects:Destroy()
+                        end
+
+                        -- Set other parts transparency to 0 (visible)
+                        for _, part in ipairs(character:GetDescendants()) do
+                            if part:IsA("BasePart") and part ~= humanoidRootPart then
+                                part.Transparency = 0
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    -- Position and handle the players
+    local distance = 10 -- Adjust the distance value as per your preference
+
+    local platformTimer = 0 -- Initialize the platform timer
+
+    while _G.PlayerFarming and platformTimer < 0.1 do
+        local localPlayer = game.Players.LocalPlayer
+        if localPlayer.Character then
+            local character = localPlayer.Character
+
+            -- Teleport the hitbox (HumanoidRootPart) to the player's character position
+            local playerRootPart = character:FindFirstChild("HumanoidRootPart")
+            if playerRootPart and playerRootPart:IsA("BasePart") then
+                for _, player in ipairs(game.Players:GetPlayers()) do
+                    if player ~= localPlayer and not (string.find(string.lower(player.DisplayName), "tempus") or string.find(string.lower(player.DisplayName), "cap")) then
+                        if not player:IsFriendsWith(localPlayer.UserId) then
+                            local character = player.Character
+                            if character then
+                                local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+                                if humanoidRootPart and humanoidRootPart:IsA("BasePart") then
+                                    -- Position the hitbox (HumanoidRootPart) in front of the player's HumanoidRootPart
+                                    local direction = playerRootPart.CFrame.lookVector
+                                    local offset = direction * distance
+                                    humanoidRootPart.CFrame = playerRootPart.CFrame + offset
+
+                                    -- Set hitbox (HumanoidRootPart) size to 25 in all aspects
+                                    local size = Vector3.new(25, 25, 25)
+                                    humanoidRootPart.Size = size
+
+                                    -- Disable collision for the hitbox (HumanoidRootPart)
+                                    humanoidRootPart.CanCollide = false
+
+                                    -- Freeze the hitbox (HumanoidRootPart) in place
+                                    humanoidRootPart.Anchored = true
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+
+            -- Disable collision for the player's character
+            character:SetAttribute("DisableCollision", true)
+            for _, part in ipairs(character:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = false
+                end
+            end
+        end
+
+        wait(0.01) -- Wait for 0.01 seconds before the next iteration
+        platformTimer = platformTimer + 0.01 -- Increment the platform timer
+    end
+
+    -- Reset the platform timer
+    platformTimer = 0
+
+    wait(0.09) -- Wait for the remaining time (0.1 - 0.01) before generating the next platform
+end
