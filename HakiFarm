@@ -1,28 +1,33 @@
-local Players = game:GetService("Players")
-local Workspace = game:GetService("Workspace")
+_G.AutoHaki = true
+local getPlayerId = function()
+    local players = game:GetService("Players")
+    local player = players.LocalPlayer
+    return player.UserId
+end
 
-local pl = tostring(Players.LocalPlayer.UserId)
-local userData = Workspace.UserData["User_" .. pl]
-local hakiLevel = userData.Data.HakiLevel.Value
-local iii = userData.III
+local playerId = getPlayerId()
+local hakiLevel
 
-_G.HakiFarm = true
+local function sendServerRequest(state)
+    local args = {
+        [1] = state,
+        [2] = hakiLevel
+    }
+    
+    local fireServer = workspace.UserData.User_[playerId].III.FireServer
+    fireServer(workspace.UserData.User_[playerId].III, unpack(args))
+end
 
-local iterations = 1000 -- Number of times to repeat
-
-for _ = 1, iterations do
-    if not _G.HakiFarm then
-        break -- Exit the loop if _G.HakiFarm is false
+while true do
+    if _G.AutoHaki then
+        hakiLevel = workspace.UserData.User_[playerId].HakiLevel.Value
+        
+        -- Turn the power "on"
+        sendServerRequest("On")
+        
+        -- Turn the power "off"
+        sendServerRequest("Off")
     end
-
-    for i = 1, 25 do
-        if not _G.HakiFarm then
-            break -- Exit the inner loop if _G.HakiFarm is false
-        end
-
-        iii:FireServer("On", hakiLevel)
-        iii:FireServer("Off", hakiLevel)
-    end
-
-    wait() -- Add a small delay between iterations
+    
+    wait() -- Add a small delay to prevent excessive loops
 end
