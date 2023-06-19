@@ -7,7 +7,7 @@ local lv = Workspace.UserData["User_"..pl].Data.HakiLevel.Value
 _G.HakiFarm = true
 
 while _G.HakiFarm do
-    for i = 1, 150 do
+    for i = 1, 5 do
         if _G.HakiFarm then
             Workspace.UserData["User_"..pl].III:FireServer("On", lv)
             Workspace.UserData["User_"..pl].III:FireServer("On", lv)
