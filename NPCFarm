@@ -8,8 +8,8 @@ while _G.NpcFarming do
     end
 
     -- Generate random X, Y, and Z coordinates
-    local minX = -100000 -- Adjust the minimum and maximum X and Z coordinates as desired
-    local maxX = 100000
+    local minX = -1000000000000000 -- Adjust the minimum and maximum X and Z coordinates as desired
+    local maxX = 1000000000000000
     local minY = 50000
     local maxY = 75000 -- Adjust the maximum Y coordinate as desired
 
