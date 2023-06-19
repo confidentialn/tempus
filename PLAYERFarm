@@ -34,10 +34,16 @@ while _G.PlayerFarming do
     part.Parent = workspace
 
     -- Fire the UpdateHaki remote
-    workspace.UserData["User_"..game.Players.LocalPlayer.UserId].UpdateHaki:FireServer()
+    local updateHakiRemote = workspace.UserData["User_" .. game.Players.LocalPlayer.UserId].UpdateHaki
+    if updateHakiRemote then
+        updateHakiRemote:FireServer()
+    end
 
     -- Fire the Retum remote
-    workspace.Merchants.ExpertiseMerchant.Clickable.Retum:FireServer()
+    local retumRemote = workspace.Merchants.ExpertiseMerchant.Clickable.Retum
+    if retumRemote then
+        retumRemote:FireServer()
+    end
 
     -- Teleport the player to the platform
     local localPlayer = game.Players.LocalPlayer
@@ -128,12 +134,12 @@ while _G.PlayerFarming do
             end
         end
 
-        wait() -- Wait for 0.01 seconds before the next iteration
-        platformTimer = platformTimer + 0 -- Increment the platform timer
+        wait() -- Wait for 1 frame before the next iteration
+        platformTimer = platformTimer + wait() -- Increment the platform timer
     end
 
     -- Reset the platform timer
     platformTimer = 0
 
-    wait() -- Wait for the remaining time (0.1 - 0.01) before generating the next platform
+    wait(0.1) -- Wait for 0.1 seconds before generating the next platform
 end
