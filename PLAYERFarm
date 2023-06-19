@@ -8,10 +8,10 @@ while _G.PlayerFarming do
     end
 
     -- Generate random X, Y, and Z coordinates
-    local minX = -1000000000000000 -- Adjust the minimum and maximum X and Z coordinates as desired
-    local maxX = 1000000000000000
+    local minX = -100000 -- Adjust the minimum and maximum X and Z coordinates as desired
+    local maxX = 100000
     local minY = 50000
-    local maxY = 1000000000000000 -- Adjust the maximum Y coordinate as desired
+    local maxY = 75000 -- Adjust the maximum Y coordinate as desired
 
     local randomX = math.random(minX, maxX)
     local randomY = math.random(minY, maxY)
@@ -34,16 +34,10 @@ while _G.PlayerFarming do
     part.Parent = workspace
 
     -- Fire the UpdateHaki remote
-    local updateHakiRemote = workspace.UserData["User_" .. game.Players.LocalPlayer.UserId].UpdateHaki
-    if updateHakiRemote then
-        updateHakiRemote:FireServer()
-    end
+    workspace.UserData["User_"..game.Players.LocalPlayer.UserId].UpdateHaki:FireServer()
 
     -- Fire the Retum remote
-    local retumRemote = workspace.Merchants.ExpertiseMerchant.Clickable.Retum
-    if retumRemote then
-        retumRemote:FireServer()
-    end
+    workspace.Merchants.ExpertiseMerchant.Clickable.Retum:FireServer()
 
     -- Teleport the player to the platform
     local localPlayer = game.Players.LocalPlayer
@@ -134,12 +128,12 @@ while _G.PlayerFarming do
             end
         end
 
-        wait() -- Wait for 1 frame before the next iteration
-        platformTimer = platformTimer + wait() -- Increment the platform timer
+        wait(0.01) -- Wait for 0.01 seconds before the next iteration
+        platformTimer = platformTimer + 0.01 -- Increment the platform timer
     end
 
     -- Reset the platform timer
     platformTimer = 0
 
-    wait(0.1) -- Wait for 0.1 seconds before generating the next platform
+    wait(0.09) -- Wait for the remaining time (0.1 - 0.01) before generating the next platform
 end
