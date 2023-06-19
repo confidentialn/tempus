@@ -7,14 +7,18 @@ local lv = Workspace.UserData["User_"..pl].Data.HakiLevel.Value
 _G.HakiFarm = true
 
 while _G.HakiFarm do
-    if _G.HakiFarm then
-        Workspace.UserData["User_"..pl].III:FireServer("On", lv)
-        Workspace.UserData["User_"..pl].III:FireServer("On", lv)
-        Workspace.UserData["User_"..pl].III:FireServer("Off", lv)
-        Workspace.UserData["User_"..pl].III:FireServer("Off", lv)
-    else
-        break -- Exit the loop if _G.HakiFarm is false
+    for i = 1, 25 do
+        if _G.HakiFarm then
+            Workspace.UserData["User_"..pl].III:FireServer("On", lv)
+            Workspace.UserData["User_"..pl].III:FireServer("On", lv)
+            Workspace.UserData["User_"..pl].III:FireServer("Off", lv)
+            Workspace.UserData["User_"..pl].III:FireServer("Off", lv)
+        else
+            break -- Exit the inner loop if _G.HakiFarm is false
+        end
     end
-
+    if not _G.HakiFarm then
+        break -- Exit the outer loop if _G.HakiFarm is false
+    end
     wait() -- Add a small delay between iterations to prevent excessive server requests
 end
