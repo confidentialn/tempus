@@ -1,22 +1,28 @@
-local pl = tostring(game:GetService("Players").LocalPlayer.UserId)
-local lv = game:GetService("Workspace").UserData["User_" .. pl].Data.HakiLevel.Value
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+
+local pl = tostring(Players.LocalPlayer.UserId)
+local userData = Workspace.UserData["User_" .. pl]
+local hakiLevel = userData.Data.HakiLevel.Value
+local iii = userData.III
 
 _G.HakiFarm = true
 
-while _G.HakiFarm do
-    spawn(function()
-        while _G.HakiFarm do
-            workspace.UserData["User_" .. pl].III:FireServer("On", lv)
+local iterations = 1000 -- Number of times to repeat
+
+for _ = 1, iterations do
+    if not _G.HakiFarm then
+        break -- Exit the loop if _G.HakiFarm is false
+    end
+
+    for i = 1, 25 do
+        if not _G.HakiFarm then
+            break -- Exit the inner loop if _G.HakiFarm is false
         end
-    end)
-    
-    wait()
-    
-    spawn(function()
-        while _G.HakiFarm do
-            workspace.UserData["User_" .. pl].III:FireServer("Off", lv)
-        end
-    end)
-    
-    wait()
+
+        iii:FireServer("On", hakiLevel)
+        iii:FireServer("Off", hakiLevel)
+    end
+
+    wait() -- Add a small delay between iterations
 end
