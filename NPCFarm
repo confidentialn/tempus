@@ -8,10 +8,10 @@ while _G.NpcFarming do
     end
 
     -- Generate random X, Y, and Z coordinates
-    local minX = -1000000000000000 -- Adjust the minimum and maximum X and Z coordinates as desired
-    local maxX = 1000000000000000
+    local minX = -100000 -- Adjust the minimum and maximum X and Z coordinates as desired
+    local maxX = 100000
     local minY = 50000
-    local maxY = 1000000000000000 -- Adjust the maximum Y coordinate as desired
+    local maxY = 75000 -- Adjust the maximum Y coordinate as desired
 
     local randomX = math.random(minX, maxX)
     local randomY = math.random(minY, maxY)
@@ -118,12 +118,12 @@ while _G.NpcFarming do
             end
         end
 
-        wait() -- Wait for 0.01 seconds before the next iteration
-        platformTimer = platformTimer + 0 -- Increment the platform timer
+        wait(0.01) -- Wait for 0.01 seconds before the next iteration
+        platformTimer = platformTimer + 0.01 -- Increment the platform timer
     end
 
     -- Reset the platform timer
     platformTimer = 0
 
-    wait() -- Wait for the remaining time (0.1 - 0.01) before generating the next platform
+    wait(0.09) -- Wait for the remaining time (0.1 - 0.01) before generating the next platform
 end 
