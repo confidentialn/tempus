@@ -8,21 +8,17 @@ local iii = userData.III
 
 _G.HakiFarm = true
 
-local iterations = 1000 -- Number of times to repeat
-
-for _ = 1, iterations do
-    if not _G.HakiFarm then
-        break -- Exit the loop if _G.HakiFarm is false
-    end
-
-    for i = 1, 25 do
-        if not _G.HakiFarm then
+while _G.HakiFarm do
+    for i = 1, 1500000000 do
+        if _G.HakiFarm then
+            iii:FireServer("On", hakiLevel)
+            iii:FireServer("Off", hakiLevel)
+        else
             break -- Exit the inner loop if _G.HakiFarm is false
         end
-
-        iii:FireServer("On", hakiLevel)
-        iii:FireServer("Off", hakiLevel)
     end
-
+    if not _G.HakiFarm then
+        break -- Exit the outer loop if _G.HakiFarm is false
+    end
     wait() -- Add a small delay between iterations
 end
