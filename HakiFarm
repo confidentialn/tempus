@@ -1,24 +1,25 @@
-local Players = game:GetService("Players")
-local Workspace = game:GetService("Workspace")
-local LocalPlayer = Players.LocalPlayer
-local pl = tostring(LocalPlayer.UserId)
-local lv = Workspace.UserData["User_"..pl].Data.HakiLevel.Value
+local pl = tostring(game:GetService("Players").LocalPlayer.UserId)
+local lv = game:GetService("Workspace").UserData["User_"..pl].Data.HakiLevel.Value
 
 _G.HakiFarm = true
 
 while _G.HakiFarm do
     for i = 1, 25 do
-        if _G.HakiFarm then
-            Workspace.UserData["User_"..pl].III:FireServer("On", lv)
-            Workspace.UserData["User_"..pl].III:FireServer("On", lv)
-            Workspace.UserData["User_"..pl].III:FireServer("Off", lv)
-            Workspace.UserData["User_"..pl].III:FireServer("Off", lv)
-        else
-            break -- Exit the inner loop if _G.HakiFarm is false
+        while wait() do
+            if _G.HakiFarm then
+                workspace.UserData["User_"..pl].III:FireServer("On", lv)
+                wait()
+                workspace.UserData["User_"..pl].III:FireServer("On", lv)
+                wait()
+                workspace.UserData["User_"..pl].III:FireServer("Off", lv)
+                wait()
+                workspace.UserData["User_"..pl].III:FireServer("Off", lv)
+            else
+                break -- Exit the inner loop if _G.HakiFarm is false
+            end
         end
     end
     if not _G.HakiFarm then
         break -- Exit the outer loop if _G.HakiFarm is false
     end
-    wait() -- Add a small delay between iterations to prevent excessive server requests
 end
