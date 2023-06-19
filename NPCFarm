@@ -119,7 +119,7 @@ while _G.NpcFarming do
         end
 
         wait() -- Wait for 0.01 seconds before the next iteration
-        platformTimer = platformTimer + 0.01 -- Increment the platform timer
+        platformTimer = platformTimer + 0 -- Increment the platform timer
     end
 
     -- Reset the platform timer
