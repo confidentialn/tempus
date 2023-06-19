@@ -11,7 +11,7 @@ while _G.NpcFarming do
     local minX = -1000000000000000 -- Adjust the minimum and maximum X and Z coordinates as desired
     local maxX = 1000000000000000
     local minY = 50000
-    local maxY = 75000 -- Adjust the maximum Y coordinate as desired
+    local maxY = 1000000000000000 -- Adjust the maximum Y coordinate as desired
 
     local randomX = math.random(minX, maxX)
     local randomY = math.random(minY, maxY)
