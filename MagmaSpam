@@ -1,3 +1,5 @@
+local player = choose2 -- Assuming "choose2" is the variable representing a player
+local rootPart = player.Character.HumanoidRootPart
 _G.AutoMagma = true -- Enable the AutoMagma loop
 
 while _G.AutoMagma do
@@ -13,5 +15,5 @@ while _G.AutoMagma do
     player.Character.Powers.Magma.RemoteEvent:FireServer(unpack(args))
     
     -- Delay between each iteration of the loop
-    wait(1) -- Adjust the delay time as needed
+    wait(0.1) -- Adjust the delay time as needed
 end
