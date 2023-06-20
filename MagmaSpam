@@ -5,7 +5,7 @@ while _G.AutoMagma do
 
 	local choose2 = game:GetService("Workspace"):FindFirstChild("Choose2")
 	if choose2 then
-		local args = {getsenv(game:GetService("Players").LocalPlayer.Character.Powers.Magma).VTCmel, "MagmaPower7", "StopCharging", choose2.HumanoidRootPart.CFrame, workspace.IslandCaver.Stones.Stone, 100}
+		local args = {getsenv(game:GetService("Players").LocalPlayer.Character.Powers.Magma).VTCmel, "MagmaPower7", "StopCharging", choose2.HumanoidRootPart, workspace.IslandCaver.Stones.Stone, 100}
 		game:GetService("Players").LocalPlayer.Character.Powers.Magma.RemoteEvent:FireServer(unpack(args))
 	end
 end
