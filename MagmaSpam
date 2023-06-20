@@ -7,7 +7,7 @@ while _G.AutoMagma do
         [1] = getsenv(game:GetService("Players").LocalPlayer.Character.Powers.Magma).VTCmel,
         [2] = "MagmaPower7",
         [3] = "StopCharging",
-        [4] = choose2.HumanoidRootPart.CFrame * CFrame.Angles(-1.6409629583358765, 0.15992283821105957, 1.986436367034912),
+        [4] = CFrame.new(rootPart.Position) * CFrame.Angles(-1.6409629583358765, 0.15992283821105957, 1.986436367034912),
         [5] = workspace.IslandTown.Grass.Grass,
         [6] = 100
     }
