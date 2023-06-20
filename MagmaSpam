@@ -1,11 +1,114 @@
+
 _G.AutoMagma = true
 
 while _G.AutoMagma do
-	wait(0.2)
-
-	local choose2 = game:GetService("Workspace"):FindFirstChild("Choose2")
-	if choose2 then
-		local args = {getsenv(game:GetService("Players").LocalPlayer.Character.Powers.Magma).VTCmel, "MagmaPower7", "StopCharging", choose2.HumanoidRootPart, workspace.IslandCaver.Stones.Stone, 100}
-		game:GetService("Players").LocalPlayer.Character.Powers.Magma.RemoteEvent:FireServer(unpack(args))
-	end
+    local rootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    if rootPart then
+        local direction = (rootPart.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Unit
+        local lookAtCFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + direction)
+        local args = {
+            [1] = getsenv(game:GetService("Players").LocalPlayer.Character.Powers.Magma).VTCmel,
+            [2] = "MagmaPower7",
+            [3] = "StopCharging",
+            [4] = lookAtCFrame * CFrame.Angles(0.03791719675064087, -0.7909103035926819, 0.026965275406837463),
+            [5] = workspace.Cave.Stone,
+            [6] = 100
+        }
+        
+        game:GetService("Players").LocalPlayer.Character.Powers.Magma.RemoteEvent:FireServer(unpack(args))
+    else
+        print("The player's humanoid root part was not found.")
+    end
+else
+    print("Player 'choose2' was not found.")
 end
+In this modified script, the rootPart.CFrame represents the current position and rotation of the "choose2" player's humanoid root part. The angleAdjustment CFrame is then applied by multiplying it with the rootPart.CFrame, resulting in the final CFrame used as the fourth argument in the args table.
+
+
+
+
+
+User
+I want the angle to be pointing at the choose2 player
+
+
+ChatGPT
+Apologies for the confusion. If you want the CFrame to point towards the "choose2" player's humanoid root part, you can update the script as follows:
+
+lua
+Copy code
+local player = game.Players:FindFirstChild("choose2")
+
+if player then
+    local rootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    if rootPart then
+        local direction = (rootPart.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Unit
+        local lookAtCFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + direction)
+        local args = {
+            [1] = 383137.95,
+            [2] = "MagmaPower7",
+            [3] = "StopCharging",
+            [4] = lookAtCFrame * CFrame.Angles(0.03791719675064087, -0.7909103035926819, 0.026965275406837463),
+            [5] = workspace.Cave.Stone,
+            [6] = 100
+        }
+        
+        game:GetService("Players").LocalPlayer.Character.Powers.Magma.RemoteEvent:FireServer(unpack(args))
+    else
+        print("The player's humanoid root part was not found.")
+    end
+else
+    print("Player 'choose2' was not found.")
+end
+This updated script calculates the direction vector from the current player's humanoid root part to the "choose2" player's humanoid root part. Then, it constructs a CFrame using CFrame.new with the current player's root part position as the starting point and the direction vector as the endpoint. This CFrame makes the current player's character look towards the "choose2" player.
+
+The resulting CFrame is then combined with the angle adjustments using * operator to get the final orientation, which is used as the fourth argument in the args table.
+
+
+
+
+
+User
+make it loop under _G.AutoMagma
+
+ChatGPT
+To make the script loop under _G.AutoMagma, you can modify the code as follows:
+
+lua
+Copy code
+_G.AutoMagma = true
+
+while _G.AutoMagma do
+    local player = game.Players:FindFirstChild("choose2")
+
+    if player then
+        local rootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+        if rootPart then
+            local direction = (rootPart.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Unit
+            local lookAtCFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position, game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + direction)
+            local args = {
+                [1] = 383137.95,
+                [2] = "MagmaPower7",
+                [3] = "StopCharging",
+                [4] = lookAtCFrame * CFrame.Angles(0.03791719675064087, -0.7909103035926819, 0.026965275406837463),
+                [5] = workspace.Cave.Stone,
+                [6] = 100
+            }
+
+            game:GetService("Players").LocalPlayer.Character.Powers.Magma.RemoteEvent:FireServer(unpack(args))
+        else
+            print("The player's humanoid root part was not found.")
+        end
+    else
+        print("Player 'choose2' was not found.")
+    end
+
+    wait() -- Wait before looping again
+end
+
+
+
+
+
+
+
