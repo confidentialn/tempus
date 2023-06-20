@@ -6,7 +6,7 @@ while _G.AutoMagma do
     pcall(function()
     for i,v in pairs(game:GetService("Workspace"):GetChildren()) do
         if v.Name == Choose2 then
-            game:GetService("Players").LocalPlayer.Character.Powers.Magma.RemoteEvent:FireServer(vp,"MagmaPower7", "StopCharging",workspace.IslandCaver.Stones.Stone,v.HumanoidRootPart.CFrame* CFrame.Angles(-1.6409629583358765, 0.15992283821105957, 1.986436367034912),100,workspace.IslandTown.Grass.Grass)
+            game:GetService("Players").LocalPlayer.Character.Powers.Magma.RemoteEvent:FireServer(vp,"MagmaPower7", "StopCharging",workspace.IslandCaver.Stones.Stone,CFrame.new(v.HumanoidRootPart.Position) * CFrame.Angles(-1.6409629583358765, 0.15992283821105957, 1.986436367034912),100,workspace.IslandTown.Grass.Grass)
         end
     end
     end)
