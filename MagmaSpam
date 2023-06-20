@@ -1,19 +1,13 @@
-local player = choose2 -- Assuming "choose2" is the variable representing a player
-local rootPart = player.Character.HumanoidRootPart
-_G.AutoMagma = true -- Enable the AutoMagma loop
-
+_G.AutoMagma = true
+local x = getsenv(game:GetService("Players").LocalPlayer.Character.Powers.Magma)
+local vp = x.VTCmel
 while _G.AutoMagma do
-    local args = {
-        [1] = getsenv(game:GetService("Players").LocalPlayer.Character.Powers.Magma).VTCmel,
-        [2] = "MagmaPower7",
-        [3] = "StopCharging",
-        [4] = CFrame.new(rootPart.Position) * CFrame.Angles(-1.6409629583358765, 0.15992283821105957, 1.986436367034912),
-        [5] = workspace.IslandTown.Grass.Grass,
-        [6] = 100
-    }
-    
-    player.Character.Powers.Magma.RemoteEvent:FireServer(unpack(args))
-    
-    -- Delay between each iteration of the loop
-    wait(0.1) -- Adjust the delay time as needed
-end
+    wait(0)
+    pcall(function()
+    for i,v in pairs(game:GetService("Workspace"):GetChildren()) do
+        if v.Name == Choose2 then
+            game:GetService("Players").LocalPlayer.Character.Powers.Magma.RemoteEvent:FireServer(vp,"MagmaPower7", "StopCharging",workspace.IslandCaver.Stones.Stone,v.HumanoidRootPart.CFrame* CFrame.Angles(-1.6409629583358765, 0.15992283821105957, 1.986436367034912),100,workspace.IslandTown.Grass.Grass)
+        end
+    end
+    end)
+    end
