@@ -1,4 +1,4 @@
-_G.spam = true
+_G.PLAYERMagmaSpam = true
 
 while _G.PLAYERMagmaSpam do
     local players = game:GetService("Players"):GetPlayers()
@@ -29,4 +29,5 @@ while _G.PLAYERMagmaSpam do
             end
         end
     end
+    wait()
 end
