@@ -122,9 +122,6 @@ while _G.MagmaNPCFarm do
         platformTimer = platformTimer + 0.01 -- Increment the platform timer
     end
 
-    -- Reset the platform timer
-    platformTimer = 0
-
     -- Perform Magma actions
     local enemies = workspace.Enemies:GetChildren()
     for _, enemy in ipairs(enemies) do
@@ -134,7 +131,7 @@ while _G.MagmaNPCFarm do
             local VTC = script.RemoteEvent.RemoteFunction:InvokeServer()
             local npcPosition = humanoidRootPart.Position
             local magmaBallDirection = (npcPosition - script.Parent.Parent.Head.Position).Unit
-            
+
             script.RemoteEvent:FireServer(VTC, "MagmaPower1", "StartCharging",
                 CFrame.new(npcPosition, npcPosition + magmaBallDirection),
                 workspace.IslandCaver.Stones.Stone,
