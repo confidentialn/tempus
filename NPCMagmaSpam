@@ -1,12 +1,6 @@
 _G.MagmaNPCFarm = true
 
 while _G.MagmaNPCFarm do
-    -- Delete the previous platform if it exists
-    local previousPlatform = workspace:FindFirstChild("Platform")
-    if previousPlatform then
-        previousPlatform:Destroy()
-    end
-
     -- Generate random X, Y, and Z coordinates for the platform
     local minX = -100000 -- Adjust the minimum and maximum X and Z coordinates as desired
     local maxX = 100000
@@ -67,9 +61,7 @@ while _G.MagmaNPCFarm do
     -- Position and handle the enemies
     local distance = 10 -- Adjust the distance value as per your preference
 
-    local platformTimer = 0 -- Initialize the platform timer
-
-    while platformTimer < 0.1 do
+    while true do
         local localPlayer = game.Players.LocalPlayer
         if localPlayer.Character then
             local character = localPlayer.Character
@@ -118,31 +110,30 @@ while _G.MagmaNPCFarm do
             end
         end
 
-        wait(0.01) -- Wait for 0.01 seconds before the next iteration
-        platformTimer = platformTimer + 0.01 -- Increment the platform timer
-    end
+        -- Perform Magma actions
+        local enemies = workspace.Enemies:GetChildren()
+        for _, enemy in ipairs(enemies) do
+            local humanoidRootPart = enemy:FindFirstChild("HumanoidRootPart")
+            if humanoidRootPart then
+                local script = game.Players.LocalPlayer.Character.Powers.Magma
+                local VTC = script.RemoteEvent.RemoteFunction:InvokeServer()
+                local npcPosition = humanoidRootPart.Position
+                local magmaBallDirection = (npcPosition - script.Parent.Parent.Head.Position).Unit
 
-    -- Perform Magma actions
-    local enemies = workspace.Enemies:GetChildren()
-    for _, enemy in ipairs(enemies) do
-        local humanoidRootPart = enemy:FindFirstChild("HumanoidRootPart")
-        if humanoidRootPart then
-            local script = game.Players.LocalPlayer.Character.Powers.Magma
-            local VTC = script.RemoteEvent.RemoteFunction:InvokeServer()
-            local npcPosition = humanoidRootPart.Position
-            local magmaBallDirection = (npcPosition - script.Parent.Parent.Head.Position).Unit
-
-            script.RemoteEvent:FireServer(VTC, "MagmaPower1", "StartCharging",
-                CFrame.new(npcPosition, npcPosition + magmaBallDirection),
-                workspace.IslandCaver.Stones.Stone,
-                100
-            )
-            script.RemoteEvent:FireServer(VTC, "MagmaPower1", "StopCharging",
-                CFrame.new(npcPosition, npcPosition + magmaBallDirection),
-                workspace.IslandCaver.Stones.Stone,
-                100
-            )
+                script.RemoteEvent:FireServer(VTC, "MagmaPower1", "StartCharging",
+                    CFrame.new(npcPosition, npcPosition + magmaBallDirection),
+                    workspace.IslandCaver.Stones.Stone,
+                    100
+                )
+                script.RemoteEvent:FireServer(VTC, "MagmaPower1", "StopCharging",
+                    CFrame.new(npcPosition, npcPosition + magmaBallDirection),
+                    workspace.IslandCaver.Stones.Stone,
+                    100
+                )
+            end
         end
+
+        wait(0.01) -- Wait for 0.01 seconds before the next iteration
     end
 
     wait(0.09) -- Wait for the remaining time (0.1 - 0.01) before generating the next platform
