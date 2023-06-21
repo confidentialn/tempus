@@ -1,6 +1,6 @@
 _G.BringNPCS = true
 
-if _G.BringNPCS then
+while _G.BringNPCS do
     local localPlayer = game.Players.LocalPlayer
     local character = localPlayer.Character
     local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
@@ -41,4 +41,6 @@ if _G.BringNPCS then
             end
         end
     end
+
+    wait() -- Add a delay between iterations
 end
