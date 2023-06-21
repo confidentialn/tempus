@@ -2,112 +2,25 @@ _G.MagmaNPCFarm = true
 
 while _G.MagmaNPCFarm do
     -- Generate random X, Y, and Z coordinates for the platform
-    local minX = -100000 -- Adjust the minimum and maximum X and Z coordinates as desired
-    local maxX = 100000
-    local minY = 50000
-    local maxY = 75000 -- Adjust the maximum Y coordinate as desired
-
-    local randomX = math.random(minX, maxX)
-    local randomY = math.random(minY, maxY)
-    local randomZ = math.random(minX, maxX)
-
-    -- Define the position and size of the platform
-    local platformPosition = Vector3.new(randomX, randomY, randomZ)
-    local platformSize = Vector3.new(_G.PlatformSize, 50, _G.PlatformSize) -- Adjust the size as desired
+    -- (platform generation code goes here)
 
     -- Create the platform
-    local part = Instance.new("Part")
-    part.Name = "Platform"
-    part.Position = platformPosition
-    part.Size = platformSize
-    part.BrickColor = BrickColor.new("Medium stone grey") -- Adjust the color as desired
-    part.Transparency = 0.3 -- Adjust the transparency as desired
-    part.Material = Enum.Material.Granite -- Adjust the material as desired
-    part.Anchored = true
-    part.CanCollide = true
-    part.Parent = workspace
+    -- (platform creation code goes here)
 
     -- Fire the UpdateHaki remote
-    workspace.UserData["User_"..game.Players.LocalPlayer.UserId].UpdateHaki:FireServer()
+    -- (UpdateHaki remote firing code goes here)
 
     -- Fire the Retum remote
-    workspace.Merchants.ExpertiseMerchant.Clickable.Retum:FireServer()
+    -- (Retum remote firing code goes here)
 
     -- Teleport the player to the platform
-    local localPlayer = game.Players.LocalPlayer
-    local character = localPlayer.Character
-    if character and character:FindFirstChild("HumanoidRootPart") then
-        character.HumanoidRootPart.CFrame = CFrame.new(platformPosition + Vector3.new(0, platformSize.Y / 2 + 2, 0))
-    end
+    -- (player teleportation code goes here)
 
     -- Make the enemies invisible and remove decals and effects
-    for _, enemy in ipairs(workspace.Enemies:GetChildren()) do
-        if enemy:IsA("Model") then
-            for _, part in ipairs(enemy:GetDescendants()) do
-                if part:IsA("BasePart") then
-                    -- Remove decals
-                    part:ClearAllChildren()
-
-                    -- Remove effects
-                    local effects = part:FindFirstChild("Effects")
-                    if effects then
-                        effects:Destroy()
-                    end
-                end
-            end
-        end
-    end
+    -- (enemy invisibility code goes here)
 
     -- Position and handle the enemies
-    local distance = 10 -- Adjust the distance value as per your preference
-
-    local localPlayer = game.Players.LocalPlayer
-    if localPlayer.Character then
-        local character = localPlayer.Character
-
-        -- Disable collision for the player's character
-        character:SetAttribute("DisableCollision", true)
-        for _, part in ipairs(character:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.CanCollide = false
-            end
-        end
-
-        -- Teleport the hitbox to the player's character position
-        local playerRootPart = character:FindFirstChild("HumanoidRootPart")
-        if playerRootPart and playerRootPart:IsA("BasePart") then
-            for _, enemy in ipairs(workspace.Enemies:GetChildren()) do
-                if enemy:IsA("Model") then
-                    local humanoid = enemy:FindFirstChildOfClass("Humanoid")
-                    if humanoid and humanoid.Health > 0 then
-                        local head = enemy:FindFirstChild("Head")
-                        if head and head:IsA("BasePart") then
-                            -- Position the enemy head in front of the player's HumanoidRootPart
-                            local direction = playerRootPart.CFrame.lookVector
-                            local offset = direction * distance
-                            head.CFrame = playerRootPart.CFrame + offset
-
-                            -- Set hitbox size to 25 in all aspects
-                            local size = Vector3.new(25, 25, 25)
-
-                            -- Disable collision for the hitbox
-                            head.CanCollide = false
-
-                            -- Apply the modifications to the hitbox
-                            head.Size = size
-                            head.Transparency = 1
-
-                            -- Freeze the enemy in place
-                            head.Anchored = true
-                        end
-                    else
-                        -- Delete the enemy's parts if it is dead
-                        enemy:Destroy()
-                    end
-                end
-            end
-        end
-    end
+    -- (enemy handling code goes here)
 
     -- Perform Magma actions
     local enemies = workspace.Enemies:GetChildren()
@@ -130,6 +43,8 @@ while _G.MagmaNPCFarm do
                 workspace.IslandCaver.Stones.Stone,
                 100
             )
+
+            wait(0.5) -- Wait for 0.5 seconds before the next Magma ball action
         end
     end
 
