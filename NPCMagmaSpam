@@ -1,0 +1,25 @@
+_G.MagmaNPCFarm = true
+
+while _G.spam do
+    local enemies = workspace.Enemies:GetChildren()
+    for _, enemy in ipairs(enemies) do
+        local humanoidRootPart = enemy:FindFirstChild("HumanoidRootPart")
+        if humanoidRootPart then
+            local script = game:GetService("Players").LocalPlayer.Character.Powers.Magma
+            local VTC = script.RemoteEvent.RemoteFunction:InvokeServer()
+            local npcPosition = humanoidRootPart.Position
+            local magmaBallDirection = (npcPosition - script.Parent.Parent.Head.Position).Unit
+            
+            script.RemoteEvent:FireServer(VTC, "MagmaPower1", "StartCharging",
+                CFrame.new(npcPosition, npcPosition + magmaBallDirection),
+                workspace.IslandCaver.Stones.Stone,
+                100
+            )
+            script.RemoteEvent:FireServer(VTC, "MagmaPower1", "StopCharging",
+                CFrame.new(npcPosition, npcPosition + magmaBallDirection),
+                workspace.IslandCaver.Stones.Stone,
+                100
+            )
+        end
+    end
+end
