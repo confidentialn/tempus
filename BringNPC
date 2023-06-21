@@ -11,24 +11,44 @@ while _G.BringNPCS do
 
         for _, enemy in ipairs(workspace.Enemies:GetChildren()) do
             if enemy:IsA("Model") then
-                local npcHead = enemy:FindFirstChild("Head")
                 local npcHumanoid = enemy:FindFirstChildOfClass("Humanoid")
 
-                if npcHead and npcHumanoid and npcHumanoid.Health > 0 then
-                    local npcPosition = npcHead.Position
-                    local direction = humanoidRootPart.CFrame.lookVector
-                    local offset = direction * distance
-                    npcHead.CFrame = humanoidRootPart.CFrame + offset
+                if npcHumanoid and npcHumanoid.Health > 0 then
+                    for _, part in ipairs(enemy:GetDescendants()) do
+                        if part:IsA("BasePart") then
+                            -- Remove decals
+                            part:ClearAllChildren()
 
-                    -- Set hitbox size to 25 in all aspects
-                    npcHead.Size = Vector3.new(25, 25, 25)
+                            -- Remove effects
+                            local effects = part:FindFirstChild("Effects")
+                            if effects then
+                                effects:Destroy()
+                            end
 
-                    -- Disable collision for the hitbox
-                    npcHead.CanCollide = false
+                            -- Make the enemy model invisible
+                            part.Transparency = 1
+                        end
+                    end
 
-                    -- Apply the modifications to the hitbox
-                    npcHead.Transparency = 1
-                    npcHead.Anchored = true
+                    local npcHead = enemy:FindFirstChild("Head")
+                    if npcHead then
+                        local npcPosition = npcHead.Position
+                        local direction = humanoidRootPart.CFrame.lookVector
+                        local offset = direction * distance
+                        npcHead.CFrame = humanoidRootPart.CFrame + offset
+
+                        -- Set hitbox size to 25 in all aspects
+                        npcHead.Size = Vector3.new(25, 25, 25)
+
+                        -- Disable collision for the hitbox
+                        npcHead.CanCollide = false
+
+                        -- Apply the modifications to the hitbox
+                        npcHead.Anchored = true
+                    end
+                else
+                    -- Delete the enemy's parts if it is dead
+                    enemy:Destroy()
                 end
             end
         end
