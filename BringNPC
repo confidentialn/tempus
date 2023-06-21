@@ -1,0 +1,44 @@
+_G.BringNPCS = true
+
+if _G.BringNPCS then
+    local localPlayer = game.Players.LocalPlayer
+    local character = localPlayer.Character
+    local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
+
+    if humanoidRootPart then
+        local platformSize = Vector3.new(_G.PlatformSize, 50, _G.PlatformSize) -- Adjust the platform size as desired
+        local distance = 10 -- Adjust the distance value as per your preference
+
+        for _, enemy in ipairs(workspace.Enemies:GetChildren()) do
+            if enemy:IsA("Model") then
+                local npcHead = enemy:FindFirstChild("Head")
+                local npcHumanoid = enemy:FindFirstChildOfClass("Humanoid")
+
+                if npcHead and npcHumanoid and npcHumanoid.Health > 0 then
+                    local npcPosition = npcHead.Position
+                    local direction = humanoidRootPart.CFrame.lookVector
+                    local offset = direction * distance
+                    npcHead.CFrame = humanoidRootPart.CFrame + offset
+
+                    -- Set hitbox size to 25 in all aspects
+                    npcHead.Size = Vector3.new(25, 25, 25)
+
+                    -- Disable collision for the hitbox
+                    npcHead.CanCollide = false
+
+                    -- Apply the modifications to the hitbox
+                    npcHead.Transparency = 1
+                    npcHead.Anchored = true
+                end
+            end
+        end
+
+        -- Disable collision for the player's character
+        character:SetAttribute("DisableCollision", true)
+        for _, part in ipairs(character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = false
+            end
+        end
+    end
+end
