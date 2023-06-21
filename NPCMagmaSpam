@@ -67,9 +67,7 @@ while _G.MagmaNPCFarm do
     -- Position and handle the enemies
     local distance = 10 -- Adjust the distance value as per your preference
 
-    local platformTimer = 0 -- Initialize the platform timer
-
-    while _G.MagmaNPCFarm and platformTimer < 0.1 do
+    while _G.MagmaNPCFarm do
         local localPlayer = game.Players.LocalPlayer
         if localPlayer.Character then
             local character = localPlayer.Character
@@ -119,11 +117,7 @@ while _G.MagmaNPCFarm do
         end
 
         wait(0.01) -- Wait for 0.01 seconds before the next iteration
-        platformTimer = platformTimer + 0.01 -- Increment the platform timer
     end
-
-    -- Reset the platform timer
-    platformTimer = 0
 
     -- Perform Magma actions
     local enemies = workspace.Enemies:GetChildren()
