@@ -1,6 +1,6 @@
 _G.MagmaNPCFarm = true
 
-while _G.spam do
+while _G.MagmaNPCFarm do
     local enemies = workspace.Enemies:GetChildren()
     for _, enemy in ipairs(enemies) do
         local humanoidRootPart = enemy:FindFirstChild("HumanoidRootPart")
@@ -22,4 +22,5 @@ while _G.spam do
             )
         end
     end
+    wait() -- Add a delay between iterations
 end
