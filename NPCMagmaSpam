@@ -69,7 +69,7 @@ while _G.MagmaNPCFarm do
 
     local platformTimer = 0 -- Initialize the platform timer
 
-    while _G.MagmaNPCFarm and platformTimer < 0.1 do
+    while platformTimer < 0.1 do
         local localPlayer = game.Players.LocalPlayer
         if localPlayer.Character then
             local character = localPlayer.Character
@@ -125,15 +125,12 @@ while _G.MagmaNPCFarm do
     -- Reset the platform timer
     platformTimer = 0
 
-    wait(0.09) -- Wait for the remaining time (0.1 - 0.01) before generating the next platform
-end
-
-while _G.MagmaNPCFarm do
+    -- Perform Magma actions
     local enemies = workspace.Enemies:GetChildren()
     for _, enemy in ipairs(enemies) do
         local humanoidRootPart = enemy:FindFirstChild("HumanoidRootPart")
         if humanoidRootPart then
-            local script = game:GetService("Players").LocalPlayer.Character.Powers.Magma
+            local script = game.Players.LocalPlayer.Character.Powers.Magma
             local VTC = script.RemoteEvent.RemoteFunction:InvokeServer()
             local npcPosition = humanoidRootPart.Position
             local magmaBallDirection = (npcPosition - script.Parent.Parent.Head.Position).Unit
@@ -150,5 +147,6 @@ while _G.MagmaNPCFarm do
             )
         end
     end
-    wait() -- Add a delay between iterations
+
+    wait(0.09) -- Wait for the remaining time (0.1 - 0.01) before generating the next platform
 end
