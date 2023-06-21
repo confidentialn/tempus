@@ -61,7 +61,7 @@ while _G.MagmaNPCFarm do
     -- Position and handle the enemies
     local distance = 10 -- Adjust the distance value as per your preference
 
-    while true do
+    while _G.MagmaNPCFarm do
         local localPlayer = game.Players.LocalPlayer
         if localPlayer.Character then
             local character = localPlayer.Character
