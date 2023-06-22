@@ -1,3 +1,4 @@
+_G.AutoPlat = true
 -- Main platform generation loop
 while _G.AutoPlat do
     -- Delete the previous platform if it exists
