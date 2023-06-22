@@ -1,5 +1,4 @@
-_G.AutoPlat = true
-
+-- Main platform generation loop
 while _G.AutoPlat do
     -- Delete the previous platform if it exists
     local previousPlatform = workspace:FindFirstChild("Platform")
@@ -32,12 +31,6 @@ while _G.AutoPlat do
     part.Anchored = true
     part.CanCollide = true
     part.Parent = workspace
-
-    -- Fire the UpdateHaki remote
-    workspace.UserData["User_"..game.Players.LocalPlayer.UserId].UpdateHaki:FireServer()
-
-    -- Fire the Retum remote
-    workspace.Merchants.ExpertiseMerchant.Clickable.Retum:FireServer()
 
     -- Teleport the player to the platform
     local localPlayer = game.Players.LocalPlayer
