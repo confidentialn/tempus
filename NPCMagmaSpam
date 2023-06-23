@@ -21,7 +21,7 @@ while _G.MagmaNPCFarm do
                 100
             )
             
-            wait(1) -- Wait for 0.5 seconds before the next Magma action
+            wait(0.53333333) -- Wait for 0.5 seconds before the next Magma action
         end
     end
     
