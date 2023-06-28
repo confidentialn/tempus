@@ -1,8 +1,13 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 local Window = Library.CreateLib("Tempus Hub", "DarkTheme")
 _G.Antimod = true
+_G.AntiAFK = true
 _G.CompassNumber = 1
-
+_G.PlatformSize = 1
+local PLRS = {}
+for i,v in pairs(game:GetService("Players"):GetChildren()) do
+table.insert(PLRS,v.Name)
+end
 if game.PlaceId == 3237168 then
 
     -- MAIN
@@ -410,9 +415,87 @@ if game.PlaceId == 3237168 then
 	Game.Workspace.UserData["User_"..plrid].Data.CB_Mark15.Value = true
 	Game.Workspace.UserData["User_"..plrid].Data.CB_Mark16.Value = true
 	end)
+	
+	MiscSection:NewToggle("Auto Buso", "Auto Buso Haki", function(state)
+        if state then
+            _G.BusoHaki = true
+			while _G.BusoHaki do
+				wait(0.5)
+				workspace.UserData["User_"..game.Players.LocalPlayer.UserId].UpdateHaki:FireServer()
+			end
+        else
+			_G.BusoHaki = false
+        end
+    end)
 
 
-		
+	MiscSection:NewToggle("Auto expertise", "auto claims expertise", function(state)
+		if state then
+			-- Initialize the Expertise loop
+			_G.Expertise = true
+			while _G.Expertise do
+				wait(1)
+				workspace.Merchants.ExpertiseMerchant.Clickable.Retum:FireServer()
+			end
+		else
+			_G.Expertise = false
+		end
+	end)
+	
+	--SPAMS
+
+    local Spams = Window:NewTab("Spams")
+    local NPCSection = Spams:NewSection("NPCS")
+    local PKSection = Spams:NewSection("PLAYERS")
+
+	NPCSection:NewToggle("Magma NPC farm", "Magma ball spam on npcs", function(state)
+		if state then
+			loadstring(game:HttpGet('https://github.com/confidentialn/tempus/raw/main/NPCMagmaSpam'))()
+		else
+			_G.MagmaNPCFarm = false
+		end
+	end)
+
+	NPCSection:NewToggle("AutoPlatform", "Automatically makes a platform", function(state)
+		if state then
+			loadstring(game:HttpGet('https://github.com/confidentialn/tempus/raw/main/Autoplat'))()
+		else
+			_G.AutoPlat = false
+		end
+	end)
+
+	NPCSection:NewToggle("Bring NPCS", "Brings NPCS", function(state)
+		if state then
+			loadstring(game:HttpGet('https://github.com/confidentialn/tempus/raw/main/BringNPC'))()
+		else
+			_G.BringNPC = false
+		end
+	end)
+
+
+	local dropdown =  PKSection:NewDropdown("Select Player", "", PLRS, function(asdsdasd)
+	choose2 = f
+	end)
+
+
+	PKSection:NewButton("Refresh player list", "Refreshes Dropdown", function(aa)
+	local PLRS = {}
+	for i,v in pairs(game:GetService("Players"):GetChildren()) do
+	table.insert(PLRS,v.Name)
+	end
+	dropdown:Refresh(PLRS)
+	end)
+
+	PKSection:NewToggle("Magma Spam", "Magma ball spam on player", function(state)
+		if state then
+			loadstring(game:HttpGet('https://github.com/confidentialn/tempus/raw/main/PLAYERMagmaSpam'))()
+		else
+			_G.PLAYERMagmaSpam = false
+		end
+	end)
+
+
+
     -- SETTINGS
     local Settings = Window:NewTab("Settings")
     local SettingsSection = Settings:NewSection("Settings")
